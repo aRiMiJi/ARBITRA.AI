@@ -4,8 +4,10 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import Pricing from './components/Pricing';
+import Testimonials from './components/Testimonials';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
+import ScrollToTopButton from './components/common/ScrollToTopButton';
 
 // This component creates a subtle, textured SVG background pattern.
 const BackgroundTexture: React.FC = () => {
@@ -46,9 +48,11 @@ const App: React.FC = () => {
         <Hero />
         <Features />
         <Pricing />
+        <Testimonials />
         <ContactForm />
       </main>
       <Footer />
+      <ScrollToTopButton />
     </div>
   );
 };

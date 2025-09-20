@@ -23,6 +23,8 @@
               'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
               'fade-in': 'fadeIn 0.5s ease-out forwards',
               'glow': 'glow 4s linear infinite',
+              'letter-in': 'letterIn 0.5s ease-out forwards',
+              'scale-x': 'scaleX 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards'
             },
             keyframes: {
               fadeInUp: {
@@ -36,6 +38,14 @@
               glow: {
                 '0%, 100%': { textShadow: '0 0 5px #00f6ff, 0 0 10px #00f6ff, 0 0 20px #00f6ff' },
                 '50%': { textShadow: '0 0 10px #00f6ff, 0 0 20px #00f6ff, 0 0 40px #00f6ff' },
+              },
+              letterIn: {
+                '0%': { opacity: '0', transform: 'translateY(20px) scale(0.8)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+              },
+              scaleX: {
+                'from': { transform: 'scaleX(0)' },
+                'to': { transform: 'scaleX(1)' }
               }
             }
           }

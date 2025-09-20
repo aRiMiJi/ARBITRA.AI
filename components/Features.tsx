@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
-import { LockIcon, CustomizeIcon, MonitorIcon } from './icons/Icons';
+import { LockIcon, CustomizeIcon, MonitorIcon, ShieldCheckIcon, SOC2Badge, ISO27001Badge, GDPRBadge } from './icons/Icons';
 
 const featuresData = [
   {
@@ -17,6 +17,11 @@ const featuresData = [
     icon: <MonitorIcon className="h-10 w-10 text-brand-cyan mb-4" />,
     title: 'Advanced Monitoring',
     description: 'Gain real-time insights into prompt performance, usage, and costs. Optimize your AI investments with powerful analytics and reporting dashboards.',
+  },
+  {
+    icon: <ShieldCheckIcon className="h-10 w-10 text-brand-cyan mb-4" />,
+    title: 'Compliance & Auditing',
+    description: 'Meet regulatory requirements with detailed, immutable audit trails and granular, role-based access controls to ensure your AI usage aligns with company policies.',
   },
 ];
 
@@ -59,7 +64,7 @@ const Features: React.FC = () => {
         <h2 className="text-4xl font-bold text-slate-100 tracking-tight">The Foundation for Your AI Strategy</h2>
         <p className="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">arbitra.ai provides the critical infrastructure for managing your most valuable AI assets.</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {featuresData.map((feature, index) => (
           <Card key={index}>
             <div className="flex flex-col items-center text-center">
@@ -69,6 +74,18 @@ const Features: React.FC = () => {
             </div>
           </Card>
         ))}
+      </div>
+
+      {/* Trust Badges Section */}
+      <div className="mt-24 text-center">
+        <h3 className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+          Certified &amp; Compliant
+        </h3>
+        <div className="mt-8 flex justify-center items-center gap-8 filter grayscale hover:grayscale-0 transition-all duration-300">
+          <SOC2Badge className="h-16 text-slate-400" />
+          <ISO27001Badge className="h-16 text-slate-400" />
+          <GDPRBadge className="h-16 text-slate-400" />
+        </div>
       </div>
     </section>
   );

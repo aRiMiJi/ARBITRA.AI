@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
 import Button from './common/Button';
+import { SOC2Badge, ISO27001Badge, GDPRBadge } from './icons/Icons';
 
 const pricingPlans = [
   {
@@ -99,6 +100,18 @@ const Pricing: React.FC = () => {
             </div>
           </Card>
         ))}
+      </div>
+
+      {/* Trust Badges Section */}
+      <div className="mt-24 text-center">
+        <h3 className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+          Security is built into every plan
+        </h3>
+        <div className="mt-8 flex justify-center items-center gap-8 filter grayscale hover:grayscale-0 transition-all duration-300">
+          <SOC2Badge className="h-16 text-slate-400" />
+          <ISO27001Badge className="h-16 text-slate-400" />
+          <GDPRBadge className="h-16 text-slate-400" />
+        </div>
       </div>
     </section>
   );
