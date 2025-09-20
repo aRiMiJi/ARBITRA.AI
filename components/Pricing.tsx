@@ -37,10 +37,9 @@ const Pricing: React.FC = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Trigger animation when the element is partially in view
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // Stop observing after animation is triggered
+          observer.unobserve(entry.target);
         }
       },
       { threshold: 0.1 }
@@ -58,43 +57,53 @@ const Pricing: React.FC = () => {
     };
   }, []);
 
+  const handleButtonClick = () => {
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section 
       id="pricing" 
       ref={sectionRef}
-      // Apply animation class when isVisible is true
       className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
-      style={{ animationDelay: '0.4s' }}>
+      style={{ animationDelay: '0.4s' }}
+      aria-labelledby="pricing-heading"
+      aria-describedby="pricing-description"
+    >
+      <p id="pricing-description" className="sr-only">
+        Transparent and scalable pricing plans for arbitra.ai. Choose from Starter, Pro, and custom Enterprise solutions to fit your team's needs.
+      </p>
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-slate-100 tracking-tight">Transparent & Scalable Pricing</h2>
-        <p className="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">Choose the plan that fits your needs. No hidden fees, ever.</p>
+        <h2 id="pricing-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Transparent & Scalable Pricing</h2>
+        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">Choose the plan that fits your needs. No hidden fees, ever.</p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         {pricingPlans.map((plan, index) => (
-          <Card key={index} isHighlighted={plan.isHighlighted} className="flex flex-col">
+          <Card 
+             key={index} 
+             className={`flex flex-col ${plan.isHighlighted ? 'border-brand-cyan' : ''}`}
+          >
             {plan.isHighlighted && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-brand-cyan text-brand-dark text-sm font-bold tracking-wider uppercase">Most Popular</div>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-brand-cyan text-brand-dark text-sm font-bold tracking-widest uppercase">Most Popular</div>
             )}
             <div className="flex-grow">
-              <h3 className="text-2xl font-bold text-slate-100">{plan.name}</h3>
+              <h3 className="text-2xl font-bold font-sans text-brand-light uppercase">{plan.name}</h3>
               <div className="my-4">
-                <span className="text-5xl font-extrabold text-white">{plan.price}</span>
-                <span className="text-slate-400">{plan.period}</span>
+                <span className="text-5xl font-bold font-sans text-white">{plan.price}</span>
+                <span className="text-brand-gray">{plan.period}</span>
               </div>
-              <p className="text-slate-400 mb-8">{plan.description}</p>
-              <ul className="space-y-4 text-slate-300">
+              <p className="text-brand-gray mb-8 h-20">{plan.description}</p>
+              <ul className="space-y-4 text-brand-light">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-center">
-                    <svg className="h-5 w-5 text-brand-cyan mr-3 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                    <span className="text-brand-cyan mr-3 font-bold">+</span>
                     {feature}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="mt-10">
-              <Button variant={plan.isHighlighted ? 'primary' : 'secondary'} className="w-full">
+              <Button onClick={handleButtonClick} variant={plan.isHighlighted ? 'primary' : 'secondary'} className="w-full">
                 {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
               </Button>
             </div>
@@ -102,15 +111,14 @@ const Pricing: React.FC = () => {
         ))}
       </div>
 
-      {/* Trust Badges Section */}
       <div className="mt-24 text-center">
-        <h3 className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+        <h3 className="text-sm font-bold tracking-widest text-brand-gray uppercase">
           Security is built into every plan
         </h3>
-        <div className="mt-8 flex justify-center items-center gap-8 filter grayscale hover:grayscale-0 transition-all duration-300">
-          <SOC2Badge className="h-16 text-slate-400" />
-          <ISO27001Badge className="h-16 text-slate-400" />
-          <GDPRBadge className="h-16 text-slate-400" />
+        <div className="mt-8 flex justify-center items-center gap-4 sm:gap-8 flex-wrap">
+          <SOC2Badge />
+          <ISO27001Badge />
+          <GDPRBadge />
         </div>
       </div>
     </section>

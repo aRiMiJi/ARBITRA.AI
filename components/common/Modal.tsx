@@ -23,20 +23,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+      className="fixed inset-0 bg-brand-dark/95 z-50 flex items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className="relative bg-brand-dark-accent border border-slate-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="relative bg-brand-dark border-2 border-brand-dark-accent w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-brand-dark-accent/80 backdrop-blur-sm z-10 flex items-center justify-between p-6 border-b border-slate-800">
-          <h2 className="text-2xl font-bold text-slate-100">{title}</h2>
+        <div className="sticky top-0 bg-brand-dark/80 backdrop-blur-sm z-10 flex items-center justify-between p-6 border-b-2 border-brand-dark-accent">
+          <h2 className="text-2xl font-bold font-sans text-brand-light uppercase">{title}</h2>
           <button
             onClick={onClose}
-            className="text-slate-500 hover:text-brand-cyan transition-colors"
+            className="text-brand-gray hover:text-brand-cyan transition-colors"
             aria-label="Close modal"
           >
             <CloseIcon className="h-6 w-6" />

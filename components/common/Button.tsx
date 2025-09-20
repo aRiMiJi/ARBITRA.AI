@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,16 +7,23 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', className = '', ...props }) => {
-  const baseClasses = 'px-6 py-3 font-bold tracking-wider uppercase transition-all duration-300 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-dark';
+  const baseClasses = 'relative group px-8 py-4 font-bold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-dark focus:ring-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out';
 
   const variantClasses = {
-    primary: 'bg-brand-cyan text-brand-dark hover:shadow-[0_0_25px_rgba(0,246,255,0.7)] hover:-translate-y-1 focus:ring-brand-cyan',
-    secondary: 'border-2 border-slate-600 text-slate-300 hover:bg-slate-700 hover:border-slate-500 focus:ring-slate-500',
+    primary: 'bg-brand-cyan text-brand-dark hover:shadow-[0_0_20px_theme(colors.brand-cyan)] hover:brightness-110 active:bg-brand-orange active:shadow-none active:brightness-125',
+    secondary: 'bg-transparent border-2 border-brand-cyan text-brand-cyan overflow-hidden',
   };
 
   return (
     <button className={`${baseClasses} ${variantClasses[variant]} ${className}`} {...props}>
-      {children}
+      {/* Background fill for secondary button hover effect */}
+      {variant === 'secondary' && (
+        <span 
+            className="absolute inset-0 bg-brand-cyan/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"
+            aria-hidden="true"
+        ></span>
+      )}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 };

@@ -1,70 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>arbitra.ai - Enterprise AI Prompt Licensing</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              'sans': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-              'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
-            },
-            colors: {
-              'brand-cyan': '#00f6ff',
-              'brand-dark': '#0a0f18',
-              'brand-dark-accent': '#101827',
-            },
-            animation: {
-              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-              'fade-in': 'fadeIn 0.5s ease-out forwards',
-              'glow': 'glow 4s linear infinite',
-              'letter-in': 'letterIn 0.5s ease-out forwards',
-              'scale-x': 'scaleX 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards'
-            },
-            keyframes: {
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-              fadeIn: {
-                'from': { opacity: '0' },
-                'to': { opacity: '1' },
-              },
-              glow: {
-                '0%, 100%': { textShadow: '0 0 5px #00f6ff, 0 0 10px #00f6ff, 0 0 20px #00f6ff' },
-                '50%': { textShadow: '0 0 10px #00f6ff, 0 0 20px #00f6ff, 0 0 40px #00f6ff' },
-              },
-              letterIn: {
-                '0%': { opacity: '0', transform: 'translateY(20px) scale(0.8)' },
-                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
-              },
-              scaleX: {
-                'from': { transform: 'scaleX(0)' },
-                'to': { transform: 'scaleX(1)' }
-              }
-            }
-          }
-        }
-      }
-    </script>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arbitra.ai | Enterprise AI Prompt Licensing</title>
+  <meta name="description" content="arbitra.ai provides enterprise-grade security, licensing, and auditability for your AI prompts. Secure, scale, and control your AI development workflow.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
   <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/"
+  {
+    "imports": {
+      "react": "https://aistudiocdn.com/react@^19.1.1",
+      "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+      "react/": "https://aistudiocdn.com/react@^19.1.1/",
+      "@google/genai": "https://aistudiocdn.com/@google/genai@^1.20.0",
+      "react-syntax-highlighter": "https://aistudiocdn.com/react-syntax-highlighter@^15.6.6",
+      "react-syntax-highlighter/": "https://aistudiocdn.com/react-syntax-highlighter@^15.6.6/"
+    }
   }
-}
-</script>
+  </script>
+  
+  <style>
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    /* Custom Brutalist Scrollbar */
+    ::-webkit-scrollbar {
+      width: 16px;
+      background-color: #1A1A1A; /* A slightly lighter shade of the track */
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #101010;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-1 1l2-2' stroke='%23333' stroke-width='1'/%3E%3Cpath d='M0 10l10-10' stroke='%23333' stroke-width='1'/%3E%3Cpath d='M9 11l2-2' stroke='%23333' stroke-width='1'/%3E%3C/svg%3E");
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #333;
+      border: 2px solid #00f6ff;
+      box-shadow: 0 0 10px #00f6ff;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #444;
+    }
+    /* For smaller screens */
+    @media (max-width: 768px) {
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background-image: none;
+      }
+       ::-webkit-scrollbar-thumb {
+        border-width: 1px;
+      }
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cfilter id="noise" x="0" y="0" width="100%" height="100%"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/%3E%3C/svg%3E'), 
+                        linear-gradient(135deg, #101010 25%, transparent 25%),
+                        linear-gradient(225deg, #101010 25%, transparent 25%),
+                        linear-gradient(45deg, #101010 25%, transparent 25%),
+                        linear-gradient(315deg, #101010 25%, #181818 25%);
+      background-size: 1px 1px, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+      background-position: 0 0, 10px 10px, 10px 10px, 0 0, 0 0;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-dark': '#101010',
+            'brand-dark-accent': '#1A1A1A',
+            'brand-light': '#EAEAEA',
+            'brand-gray': '#888888',
+            'brand-cyan': '#00f6ff',
+            'brand-orange': '#ff7a00',
+          },
+          fontFamily: {
+            sans: ['"Bai Jamjuree"', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+            'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+            'fade-in-down': 'fadeInDown 0.5s ease-out forwards',
+            'fade-in-left': 'fadeInLeft 0.8s ease-out forwards',
+            'fade-in-right': 'fadeInRight 0.8s ease-out forwards',
+            'glitch': 'glitch 1s linear infinite',
+            'flicker': 'flicker 1.5s infinite alternate',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'preloader-shine': 'preloaderShine 2s ease-in-out infinite',
+            'draw-line': 'drawLine 1s ease-out forwards',
+            'spin': 'spin 1.5s linear infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+            fadeInUp: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeInDown: {
+                '0%': { opacity: 0, transform: 'translateY(-20px)' },
+                '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeInLeft: {
+              '0%': { opacity: 0, transform: 'translateX(-20px)' },
+              '100%': { opacity: 1, transform: 'translateX(0)' },
+            },
+            fadeInRight: {
+              '0%': { opacity: 0, transform: 'translateX(20px)' },
+              '100%': { opacity: 1, transform: 'translateX(0)' },
+            },
+            glitch: {
+              '2%, 64%': { transform: 'translate(2px, 0) skew(0deg)' },
+              '4%, 60%': { transform: 'translate(-2px, 0) skew(0deg)' },
+              '62%': { transform: 'translate(0, 0) skew(5deg)' },
+            },
+            flicker: {
+              '0%, 100%': { opacity: 1 },
+              '50%': { opacity: 0.5 },
+            },
+            pulseGlow: {
+                '0%, 100%': { boxShadow: '0 0 10px rgba(0, 246, 255, 0.2)', borderColor: 'rgba(0, 246, 255, 0.3)' },
+                '50%': { boxShadow: '0 0 25px rgba(0, 246, 255, 0.6)', borderColor: 'rgba(0, 246, 255, 0.7)' },
+            },
+            preloaderShine: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' },
+            },
+            drawLine: {
+                '0%': { strokeDashoffset: 1000 },
+                '100%': { strokeDashoffset: 0 },
+            },
+            spin: {
+                'from': { transform: 'rotate(0deg)' },
+                'to': { transform: 'rotate(360deg)' },
+            },
+          },
+          transformOrigin: {
+            '0': '0%',
+          },
+          transitionProperty: {
+            'width': 'width',
+            'height': 'height',
+            'spacing': 'margin, padding',
+          },
+          utilities: {
+            '.perspective': {
+              perspective: '1000px',
+            },
+            '.preserve-3d': {
+              transformStyle: 'preserve-3d',
+            },
+            '.rotate-y-180': {
+              transform: 'rotateY(180deg)',
+            },
+            '.backface-hidden': {
+              backfaceVisibility: 'hidden',
+            },
+          }
+        },
+      },
+      plugins: [
+          function ({ addUtilities }) {
+              addUtilities({
+                  '.perspective': {
+                      perspective: '1000px',
+                  },
+                  '.preserve-3d': {
+                      transformStyle: 'preserve-3d',
+                  },
+                   '.rotate-y-180': {
+                      transform: 'rotateY(180deg)',
+                  },
+                  '.backface-hidden': {
+                      backfaceVisibility: 'hidden',
+                  },
+              })
+          }
+      ],
+    }
+  </script>
 </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body class="bg-brand-dark">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>

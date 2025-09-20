@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
 import Button from './common/Button';
@@ -65,25 +64,30 @@ const Testimonials: React.FC = () => {
         ref={sectionRef}
         className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
         style={{ animationDelay: '0.4s' }}
+        aria-labelledby="testimonials-heading"
+        aria-describedby="testimonials-description"
       >
+        <p id="testimonials-description" className="sr-only">
+          See how industry leaders are using arbitra.ai to revolutionize their AI workflows. Read customer testimonials about our security, control, and performance.
+        </p>
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-100 tracking-tight">Trusted by Industry Leaders</h2>
-          <p className="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">Hear what our customers have to say about arbitra.ai.</p>
+          <h2 id="testimonials-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Trusted by Industry Leaders</h2>
+          <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">Hear what our customers have to say about arbitra.ai.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonialsData.map((testimonial, index) => (
             <Card key={index} className="flex flex-col justify-between">
               <div className="flex-grow">
-                <svg className="w-10 h-10 text-brand-cyan/50 mb-4" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
-                  <path d="M9.33 6.984h5.328l-2.656 7.969h5.328v11.094h-13.313v-11.094l5.313-7.969zM22.016 6.984h5.328l-2.656 7.969h5.328v11.094h-13.313v-11.094l5.313-7.969z"></path>
-                </svg>
-                <blockquote className="text-slate-300 italic">"{testimonial.quote}"</blockquote>
+                <p className="text-8xl font-sans font-bold text-brand-cyan/20 leading-none">“</p>
+                <blockquote className="text-brand-light -mt-8">"{testimonial.quote}"</blockquote>
               </div>
               <div className="mt-6 flex items-center">
-                <img className="h-12 w-12 rounded-full object-cover flex-shrink-0" src={testimonial.avatar} alt={`Avatar of ${testimonial.name}`} />
+                 <div className="w-14 h-14 p-0.5 border-2 border-transparent hover:border-brand-cyan transition-colors duration-200">
+                    <img className="h-full w-full object-cover filter grayscale hover:grayscale-0 transition-all duration-200" src={testimonial.avatar} alt={`Avatar of ${testimonial.name}`} />
+                 </div>
                 <div className="ml-4">
-                  <p className="font-bold text-slate-100">{testimonial.name}</p>
-                  <p className="text-sm text-slate-400">{testimonial.title}, {testimonial.company}</p>
+                  <p className="font-bold font-sans text-brand-light uppercase">{testimonial.name}</p>
+                  <p className="text-sm text-brand-gray">{testimonial.title}, {testimonial.company}</p>
                 </div>
               </div>
             </Card>

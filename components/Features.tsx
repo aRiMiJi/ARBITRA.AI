@@ -1,41 +1,35 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
-import { LockIcon, CustomizeIcon, MonitorIcon, ShieldCheckIcon, SOC2Badge, ISO27001Badge, GDPRBadge } from './icons/Icons';
 
 const featuresData = [
   {
-    icon: <LockIcon className="h-10 w-10 text-brand-cyan mb-4" />,
-    title: 'Enterprise-Grade Security',
-    description: 'Protect your proprietary prompts with end-to-end encryption, access controls, and comprehensive audit trails. Fully compliant with industry standards.',
+    title: "Secure Prompt Licensing",
+    description: "Create, manage, and distribute licensed prompts with enterprise-grade security. Ensure your proprietary AI logic is protected.",
+    delay: '0.2s',
   },
   {
-    icon: <CustomizeIcon className="h-10 w-10 text-brand-cyan mb-4" />,
-    title: 'Custom Licensing Solutions',
-    description: 'Develop and deploy custom AI prompt models tailored to your specific business needs. Our platform scales with you from development to production.',
+    title: "Immutable Audit Trails",
+    description: "Track every prompt's lifecycle with a verifiable, unchangeable history. Meet compliance requirements and gain full visibility.",
+    delay: '0.4s',
   },
   {
-    icon: <MonitorIcon className="h-10 w-10 text-brand-cyan mb-4" />,
-    title: 'Advanced Monitoring',
-    description: 'Gain real-time insights into prompt performance, usage, and costs. Optimize your AI investments with powerful analytics and reporting dashboards.',
-  },
-  {
-    icon: <ShieldCheckIcon className="h-10 w-10 text-brand-cyan mb-4" />,
-    title: 'Compliance & Auditing',
-    description: 'Meet regulatory requirements with detailed, immutable audit trails and granular, role-based access controls to ensure your AI usage aligns with company policies.',
+    title: "Role-Based Access Control",
+    description: "Define granular permissions for who can create, access, and deploy prompts. Maintain strict control over your AI assets.",
+    delay: '0.6s',
   },
 ];
 
 const Features: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Trigger animation when the element is partially in view
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // Stop observing after animation is triggered
+          observer.unobserve(entry.target);
         }
       },
       { threshold: 0.1 }
@@ -45,47 +39,44 @@ const Features: React.FC = () => {
     if (currentRef) {
       observer.observe(currentRef);
     }
-
+    
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+        if(currentRef) {
+            observer.unobserve(currentRef);
+        }
     };
   }, []);
 
+  const handleCardClick = (index: number) => {
+    setActiveCard(index);
+    setTimeout(() => setActiveCard(null), 200); // Reset after animation
+  };
+
   return (
     <section 
-      id="features" 
-      ref={sectionRef}
-      // Apply animation class when isVisible is true
-      className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
-      style={{ animationDelay: '0.2s' }}>
+        id="features" 
+        ref={sectionRef}
+        className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+        aria-labelledby="features-heading"
+    >
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-slate-100 tracking-tight">The Foundation for Your AI Strategy</h2>
-        <p className="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">arbitra.ai provides the critical infrastructure for managing your most valuable AI assets.</p>
+        <h2 id="features-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Built for the Enterprise</h2>
+        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">arbitra.ai provides the critical infrastructure to secure, manage, and scale your AI development.</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {featuresData.map((feature, index) => (
-          <Card key={index}>
-            <div className="flex flex-col items-center text-center">
-              {feature.icon}
-              <h3 className="text-2xl font-bold text-slate-100 mb-2">{feature.title}</h3>
-              <p className="text-slate-400">{feature.description}</p>
-            </div>
-          </Card>
+          <div 
+            key={index} 
+            className={`opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+            style={{ animationDelay: feature.delay }}
+            onClick={() => handleCardClick(index)}
+          >
+            <Card isHighlighted={activeCard === index}>
+              <h3 className="text-2xl font-bold font-sans text-brand-light uppercase mb-4">{feature.title}</h3>
+              <p className="text-brand-gray">{feature.description}</p>
+            </Card>
+          </div>
         ))}
-      </div>
-
-      {/* Trust Badges Section */}
-      <div className="mt-24 text-center">
-        <h3 className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
-          Certified &amp; Compliant
-        </h3>
-        <div className="mt-8 flex justify-center items-center gap-8 filter grayscale hover:grayscale-0 transition-all duration-300">
-          <SOC2Badge className="h-16 text-slate-400" />
-          <ISO27001Badge className="h-16 text-slate-400" />
-          <GDPRBadge className="h-16 text-slate-400" />
-        </div>
       </div>
     </section>
   );

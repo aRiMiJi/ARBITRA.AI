@@ -5,15 +5,16 @@ import Button from './common/Button';
 const ContactForm: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const inputClasses = "w-full bg-slate-900/50 border border-slate-700 text-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-brand-cyan transition-colors duration-200";
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'submitted'>('idle');
+
+  const inputClasses = "w-full bg-brand-dark/50 border-2 border-brand-gray/30 text-brand-light px-4 py-3 focus:outline-none focus:ring-0 focus:border-brand-cyan transition-colors duration-200";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Trigger animation when the element is partially in view
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // Stop observing after animation is triggered
+          observer.unobserve(entry.target);
         }
       },
       { threshold: 0.1 }
@@ -31,44 +32,65 @@ const ContactForm: React.FC = () => {
     };
   }, []);
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitStatus('submitting');
+    // Simulate API call
+    setTimeout(() => {
+      setSubmitStatus('submitted');
+    }, 1500);
+  };
+
   return (
     <section 
       id="contact" 
       ref={sectionRef}
-      // Apply animation class when isVisible is true
       className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
-      style={{ animationDelay: '0.6s' }}>
+      style={{ animationDelay: '0.6s' }}
+      aria-labelledby="contact-heading"
+      aria-describedby="contact-description"
+    >
+      <p id="contact-description" className="sr-only">
+        Contact arbitra.ai to request a personalized demo. Secure your enterprise AI future and transform your AI development workflow.
+      </p>
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-slate-100 tracking-tight">Ready to Secure Your AI Future?</h2>
-        <p className="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">Request a personalized demo and discover how arbitra.ai can transform your enterprise AI workflow.</p>
+        <h2 id="contact-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Ready to Secure Your AI Future?</h2>
+        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">Request a personalized demo and discover how arbitra.ai can transform your enterprise AI workflow.</p>
       </div>
       <div className="max-w-3xl mx-auto">
         <Card>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-400 mb-2">Full Name</label>
-                <input type="text" id="name" name="name" className={inputClasses} required />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-400 mb-2">Work Email</label>
-                <input type="email" id="email" name="email" className={inputClasses} required />
-              </div>
-              <div className="md:col-span-2">
-                <label htmlFor="company" className="block text-sm font-medium text-slate-400 mb-2">Company</label>
-                <input type="text" id="company" name="company" className={inputClasses} required />
-              </div>
-              <div className="md:col-span-2">
-                <label htmlFor="message" className="block text-sm font-medium text-slate-400 mb-2">Message</label>
-                <textarea id="message" name="message" rows={4} className={inputClasses}></textarea>
-              </div>
+          {submitStatus === 'submitted' ? (
+            <div className="text-center py-12 animate-fade-in">
+              <h3 className="text-2xl font-bold font-sans text-brand-cyan uppercase">Message Sent</h3>
+              <p className="mt-4 text-brand-gray">Thank you for your interest. We will be in touch shortly.</p>
             </div>
-            <div className="mt-8 text-center">
-              <Button type="submit" variant="primary" className="w-full sm:w-auto">
-                Submit Request
-              </Button>
-            </div>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Full Name</label>
+                  <input type="text" id="name" name="name" className={inputClasses} required disabled={submitStatus === 'submitting'} />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Work Email</label>
+                  <input type="email" id="email" name="email" className={inputClasses} required disabled={submitStatus === 'submitting'} />
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="company" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Company</label>
+                  <input type="text" id="company" name="company" className={inputClasses} required disabled={submitStatus === 'submitting'} />
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="message" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Message</label>
+                  <textarea id="message" name="message" rows={4} className={inputClasses} disabled={submitStatus === 'submitting'}></textarea>
+                </div>
+              </div>
+              <div className="mt-8 text-center">
+                <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={submitStatus === 'submitting'}>
+                  {submitStatus === 'submitting' ? 'Submitting...' : 'Submit Request'}
+                </Button>
+              </div>
+            </form>
+          )}
         </Card>
       </div>
     </section>
