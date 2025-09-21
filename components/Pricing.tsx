@@ -58,12 +58,12 @@ const Pricing: React.FC = () => {
   }, []);
 
   const handleButtonClick = () => {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section 
-      id="pricing" 
+    <section
+      id="pricing"
       ref={sectionRef}
       className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
       style={{ animationDelay: '0.4s' }}
@@ -75,16 +75,21 @@ const Pricing: React.FC = () => {
       </p>
       <div className="text-center mb-16">
         <h2 id="pricing-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Transparent & Scalable Pricing</h2>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">Choose the plan that fits your needs. No hidden fees, ever.</p>
+        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
+          Choose the plan that fits your needs. No hidden fees, ever.
+        </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         {pricingPlans.map((plan, index) => (
-          <Card 
-             key={index} 
-             className={`flex flex-col ${plan.isHighlighted ? 'border-brand-cyan' : ''}`}
+          <Card
+            key={index}
+            className={`flex flex-col ${plan.isHighlighted ? 'border-brand-cyan shadow-[0_0_32px_#00fff7cc]' : ''}`}
+            isHighlighted={plan.isHighlighted}
           >
             {plan.isHighlighted && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-brand-cyan text-brand-dark text-sm font-bold tracking-widest uppercase">Most Popular</div>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-brand-cyan text-brand-dark text-sm font-bold tracking-widest uppercase shadow-lg ring-2 ring-brand-cyan/40">
+                Most Popular
+              </div>
             )}
             <div className="flex-grow">
               <h3 className="text-2xl font-bold font-sans text-brand-light uppercase">{plan.name}</h3>

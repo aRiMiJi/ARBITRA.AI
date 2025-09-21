@@ -1,61 +1,108 @@
-import React, { useState, useEffect } from 'react';
-import { ArbitraLogo } from './icons/Icons';
+import React from 'react';
 
-const Header: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
+// --- ArbitraLogo (unchanged from before) ---
+const LOGO_FONT = {
+  fontFamily: '"IBM Plex Mono", monospace',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
+  textTransform: 'uppercase',
+  fontSize: 33,
+  color: '#EAEAEA'
+};
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-    <a 
-      href={href} 
-      onClick={(e) => handleNavClick(e, href.substring(1))}
-      className="relative text-brand-light uppercase tracking-wider group pb-1"
-    >
-      {children}
-      <span className="absolute bottom-0 left-0 h-0.5 bg-brand-cyan w-0 group-hover:w-full transition-all duration-300"></span>
-    </a>
-  );
-
+export const ArbitraLogo: React.FC<{ className?: string }> = ({ className }) => {
+  const [expanded, setExpanded] = React.useState(false);
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-brand-dark/90 border-b-2 border-brand-dark-accent animate-fade-in-down' : 'bg-transparent'}`}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
-          <a href="#hero" onClick={(e) => handleNavClick(e, 'hero')} aria-label="Back to top">
-            <ArbitraLogo className="h-8 text-brand-light" />
-          </a>
-          <nav className="hidden md:flex items-center space-x-10">
-            <NavLink href="#features">Features</NavLink>
-            <NavLink href="#solutions">Solutions</NavLink>
-            <NavLink href="#how-it-works">How It Works</NavLink>
-            <NavLink href="#pricing">Pricing</NavLink>
-            <NavLink href="#faq">FAQ</NavLink>
-            <NavLink href="#contact">Contact</NavLink>
-          </nav>
-          <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className="hidden md:inline-block relative px-5 py-2 text-brand-cyan uppercase tracking-wider border-2 border-brand-cyan/50 hover:bg-brand-cyan/10 transition-colors duration-200">
-            Request Demo
-          </a>
-          <div className="md:hidden">
-            {/* Mobile menu button can be added here */}
-          </div>
-        </div>
-      </div>
-    </header>
+    <div
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+      onFocus={() => setExpanded(true)}
+      onBlur={() => setExpanded(false)}
+      tabIndex={0}
+      className={`relative select-none outline-none cursor-pointer ${className || ''}`}
+      style={{ display: 'inline-block' }}
+      aria-label="arbitra"
+    >
+      <span
+        style={{
+          ...LOGO_FONT,
+          display: 'inline-flex',
+          alignItems: 'center',
+          filter: expanded
+            ? 'drop-shadow(0 0 16px #00f6ffb8)'
+            : 'drop-shadow(0 0 6px #00f6ff38)',
+          transition: 'filter 320ms cubic-bezier(.45,.04,.32,.93)'
+        }}
+      >
+        A
+        <span
+          style={{
+            overflow: 'hidden',
+            width: expanded ? 104 : 0,
+            maxWidth: expanded ? 110 : 0,
+            opacity: expanded ? 1 : 0,
+            display: 'inline-block',
+            transition:
+              'width 340ms cubic-bezier(.25,0,.3,1), max-width 340ms cubic-bezier(.25,0,.3,1), opacity 220ms cubic-bezier(.41,0,.4,1)',
+            whiteSpace: 'nowrap',
+            willChange: 'width, max-width, opacity'
+          }}
+        >
+          RBITR
+        </span>
+        A
+      </span>
+    </div>
   );
 };
+// --- End logo code ---
+
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'Toolkit', href: '/toolkit' },
+  { label: 'Contact', href: '/contact' }
+];
+
+const Header: React.FC = () => (
+  <header className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent">
+    <div>
+      <ArbitraLogo />
+    </div>
+    <nav className="flex items-center gap-1">
+      {navItems.map((item, idx) => (
+        <React.Fragment key={item.href}>
+          <a
+            href={item.href}
+            className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-colors duration-200 font-bold group"
+            tabIndex={0}
+            style={{ outline: 'none', letterSpacing: '0.09em' }}
+          >
+            {item.label}
+          </a>
+          {idx < navItems.length - 1 && (
+            <span className="flex items-center mx-1">
+              <span
+                className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-cyan transition-all duration-200"
+                style={{
+                  opacity: 0.48,
+                  transition: "background-color 230ms cubic-bezier(.4,0,.2,1), opacity 180ms cubic-bezier(.4,0,.2,1)"
+                }}
+              ></span>
+            </span>
+          )}
+        </React.Fragment>
+      ))}
+    </nav>
+    <style>{`
+      nav > a:focus + span > span,
+      nav > a:hover + span > span {
+        background: #00f6ff !important;
+        opacity: 1;
+      }
+    `}</style>
+  </header>
+);
 
 export default Header;

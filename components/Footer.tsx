@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
     e.preventDefault();
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -27,15 +27,17 @@ const Footer: React.FC = () => {
     <footer className="bg-brand-dark-accent border-t-2 border-brand-gray/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+          {/* Logo and about */}
           <div className="flex-1">
             <a href="#hero" onClick={(e) => handleNavClick(e, 'hero')} aria-label="Back to top">
-                <ArbitraLogo className="h-8 text-brand-light" />
+              <ArbitraLogo className="h-8 text-brand-light hover:text-brand-cyan transition-colors duration-200" />
             </a>
             <p className="mt-4 text-brand-gray max-w-xs">
               Securing the future of enterprise AI with compliant, licensed, and auditable prompt management.
             </p>
           </div>
-          <div className="flex-1 flex justify-center space-x-8">
+          {/* Navigation */}
+          <nav className="flex-1 flex justify-center space-x-8" aria-label="Footer navigation">
             {footerNav.map((item) => (
               <a
                 key={item.name}
@@ -46,10 +48,18 @@ const Footer: React.FC = () => {
                 {item.name}
               </a>
             ))}
-          </div>
+          </nav>
+          {/* Social links */}
           <div className="flex-1 flex justify-end space-x-6">
             {socialLinks.map((item) => (
-              <a key={item.name} href={item.href} className="text-brand-gray hover:text-brand-cyan transition-colors duration-200" aria-label={item.name}>
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-gray hover:text-brand-cyan transition-colors duration-200"
+                aria-label={item.name}
+              >
                 <item.icon className="h-6 w-6" />
               </a>
             ))}

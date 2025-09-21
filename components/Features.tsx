@@ -39,37 +39,46 @@ const Features: React.FC = () => {
     if (currentRef) {
       observer.observe(currentRef);
     }
-    
+
     return () => {
-        if(currentRef) {
-            observer.unobserve(currentRef);
-        }
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
     };
   }, []);
 
   const handleCardClick = (index: number) => {
     setActiveCard(index);
-    setTimeout(() => setActiveCard(null), 200); // Reset after animation
+    setTimeout(() => setActiveCard(null), 220); // Slightly longer for visible effect
   };
 
   return (
-    <section 
-        id="features" 
-        ref={sectionRef}
-        className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
-        aria-labelledby="features-heading"
+    <section
+      id="features"
+      ref={sectionRef}
+      className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+      aria-labelledby="features-heading"
     >
       <div className="text-center mb-16">
-        <h2 id="features-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Built for the Enterprise</h2>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">arbitra.ai provides the critical infrastructure to secure, manage, and scale your AI development.</p>
+        <h2 id="features-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
+          Built for the Enterprise
+        </h2>
+        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
+          arbitra.ai provides the critical infrastructure to secure, manage, and scale your AI development.
+        </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {featuresData.map((feature, index) => (
-          <div 
-            key={index} 
-            className={`opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+          <div
+            key={index}
+            className={`opacity-0 cursor-pointer select-none ${isVisible ? 'animate-fade-in-up' : ''}`}
             style={{ animationDelay: feature.delay }}
             onClick={() => handleCardClick(index)}
+            tabIndex={0}
+            aria-pressed={activeCard === index}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);
+            }}
           >
             <Card isHighlighted={activeCard === index}>
               <h3 className="text-2xl font-bold font-sans text-brand-light uppercase mb-4">{feature.title}</h3>

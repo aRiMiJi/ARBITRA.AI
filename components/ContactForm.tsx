@@ -7,7 +7,8 @@ const ContactForm: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'submitted'>('idle');
 
-  const inputClasses = "w-full bg-brand-dark/50 border-2 border-brand-gray/30 text-brand-light px-4 py-3 focus:outline-none focus:ring-0 focus:border-brand-cyan transition-colors duration-200";
+  const inputClasses =
+    "w-full bg-brand-dark/50 border-2 border-brand-gray/30 text-brand-light px-4 py-3 focus:outline-none focus:ring-0 focus:border-brand-cyan transition-colors duration-200 rounded-lg";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,8 +43,8 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <section 
-      id="contact" 
+    <section
+      id="contact"
       ref={sectionRef}
       className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
       style={{ animationDelay: '0.6s' }}
@@ -54,8 +55,12 @@ const ContactForm: React.FC = () => {
         Contact arbitra.ai to request a personalized demo. Secure your enterprise AI future and transform your AI development workflow.
       </p>
       <div className="text-center mb-16">
-        <h2 id="contact-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Ready to Secure Your AI Future?</h2>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">Request a personalized demo and discover how arbitra.ai can transform your enterprise AI workflow.</p>
+        <h2 id="contact-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
+          Ready to Secure Your AI Future?
+        </h2>
+        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
+          Request a personalized demo and discover how arbitra.ai can transform your enterprise AI workflow.
+        </p>
       </div>
       <div className="max-w-3xl mx-auto">
         <Card>
@@ -65,27 +70,35 @@ const ContactForm: React.FC = () => {
               <p className="mt-4 text-brand-gray">Thank you for your interest. We will be in touch shortly.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Full Name</label>
+                  <label htmlFor="name" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">
+                    Full Name
+                  </label>
                   <input type="text" id="name" name="name" className={inputClasses} required disabled={submitStatus === 'submitting'} />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Work Email</label>
+                  <label htmlFor="email" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">
+                    Work Email
+                  </label>
                   <input type="email" id="email" name="email" className={inputClasses} required disabled={submitStatus === 'submitting'} />
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="company" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Company</label>
+                  <label htmlFor="company" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">
+                    Company
+                  </label>
                   <input type="text" id="company" name="company" className={inputClasses} required disabled={submitStatus === 'submitting'} />
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="message" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">Message</label>
-                  <textarea id="message" name="message" rows={4} className={inputClasses} disabled={submitStatus === 'submitting'}></textarea>
+                  <label htmlFor="message" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">
+                    Message
+                  </label>
+                  <textarea id="message" name="message" rows={4} className={inputClasses} disabled={submitStatus === 'submitting'} />
                 </div>
               </div>
               <div className="mt-8 text-center">
-                <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={submitStatus === 'submitting'}>
+                <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={submitStatus === 'submitting'} withSound>
                   {submitStatus === 'submitting' ? 'Submitting...' : 'Submit Request'}
                 </Button>
               </div>
