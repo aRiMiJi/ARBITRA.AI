@@ -1,14 +1,44 @@
+
 import React, { useState, useEffect, FormEvent } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
-import { WandIcon, PlayIcon } from './icons/Icons';
+import { WandIcon, PlayIcon, CopyIcon, TypewriterLogo } from './icons/Icons';
+import { getApiErrorMessage } from '../utils/errorUtils';
+import ErrorDisplay from './common/ErrorDisplay';
 
 // Blinking cursor animation for output areas
 const BlinkingCursor: React.FC = () => (
   <span className="inline-block w-2.5 h-7 bg-brand-cyan animate-flicker" />
 );
+
+const CopyButton: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!textToCopy || isCopied || textToCopy.startsWith('//')) return;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }).catch(err => console.error('Failed to copy:', err));
+  };
+  
+  const isDisabled = !textToCopy || textToCopy.startsWith('//');
+
+  return (
+    <button
+      onClick={handleCopy}
+      disabled={isDisabled || isCopied}
+      className={`px-3 py-1 text-xs font-mono uppercase tracking-widest flex items-center gap-2 bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-gray hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-brand-gray/30 disabled:hover:text-brand-gray transition-all duration-200 ${isCopied ? '!border-brand-cyan !text-brand-cyan' : ''}`}
+      aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
+    >
+      <CopyIcon className="h-4 w-4" />
+      {isCopied ? 'Copied!' : 'Copy'}
+    </button>
+  );
+};
+
 
 const PromptGenerator: React.FC = () => {
   const [userInput, setUserInput] = useState('');
@@ -16,6 +46,7 @@ const PromptGenerator: React.FC = () => {
   const [testOutput, setTestOutput] = useState('');
   const [isLoadingPrompt, setIsLoadingPrompt] = useState(false);
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [ai, setAi] = useState<GoogleGenAI | null>(null);
 
   useEffect(() => {
@@ -42,6 +73,7 @@ const PromptGenerator: React.FC = () => {
     if (!ai || !userInput || isLoadingPrompt || isLoadingOutput) return;
 
     setIsLoadingPrompt(true);
+    setError(null);
     setOptimizedPrompt('');
     setTestOutput('');
 
@@ -66,17 +98,19 @@ The user's simple request is: "${userInput}"`;
       });
       setOptimizedPrompt((response.text ?? '').trim());
     } catch (error) {
-      console.error("Error generating prompt:", error);
-      setOptimizedPrompt("// Error: Could not generate the prompt. Please check API key and network status.");
+      const friendlyError = getApiErrorMessage(error);
+      setError(friendlyError);
+      setOptimizedPrompt(`// Error: ${friendlyError}`);
     } finally {
       setIsLoadingPrompt(false);
     }
   };
 
   const handleTestOutput = async () => {
-    if (!ai || !optimizedPrompt || isLoadingPrompt || isLoadingOutput || optimizedPrompt.startsWith('// Error')) return;
+    if (!ai || !optimizedPrompt || isLoadingPrompt || isLoadingOutput || optimizedPrompt.startsWith('//')) return;
 
     setIsLoadingOutput(true);
+    setError(null);
     setTestOutput('');
 
     try {
@@ -86,8 +120,9 @@ The user's simple request is: "${userInput}"`;
       });
       setTestOutput((response.text ?? '').trim());
     } catch (error) {
-      console.error("Error generating test output:", error);
-      setTestOutput("// Error: Could not generate the test output.");
+      const friendlyError = getApiErrorMessage(error);
+      setError(friendlyError);
+      setTestOutput(`// Error: ${friendlyError}`);
     } finally {
       setIsLoadingOutput(false);
     }
@@ -99,6 +134,7 @@ The user's simple request is: "${userInput}"`;
     <section id="hero" className="flex flex-col items-center justify-center text-center min-h-screen py-20" aria-labelledby="hero-heading">
       <div className="w-full max-w-4xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         <div className="border-2 border-brand-dark-accent bg-brand-dark/50 p-6 sm:p-8">
+          <TypewriterLogo className="w-48 h-auto mx-auto mb-6 text-brand-light opacity-80" />
           <h1 id="hero-heading" className="text-4xl sm:text-5xl font-sans font-bold tracking-tighter uppercase text-brand-light mb-2">
             ARBITRA<span className="text-brand-cyan" style={{ textShadow: '0 0 15px #00f6ff' }}>.AI</span> GOLD PROMPT GENERATOR
           </h1>
@@ -121,28 +157,32 @@ The user's simple request is: "${userInput}"`;
                 <WandIcon className="h-5 w-5 inline-block mr-2" />
                 Suggest Idea
               </Button>
-              <Button type="submit" variant="primary" className="flex-grow" disabled={isGenerating || !userInput} withSound>
+              <Button type="submit" variant="primary" className="flex-grow" disabled={isGenerating || !userInput}>
                 {isLoadingPrompt ? 'Generating...' : 'Generate Gold Prompt'}
               </Button>
             </div>
           </form>
 
+          <ErrorDisplay message={error} />
+
           {/* Optimized Prompt Output */}
           <div className="mt-6">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-2 gap-2">
               <h3 className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
                 [ Optimized Prompt ]
               </h3>
-              <Button
-                onClick={handleTestOutput}
-                variant="secondary"
-                className="px-4 py-1 text-xs"
-                disabled={isGenerating || !optimizedPrompt || optimizedPrompt.startsWith('//')}
-                withSound
-              >
-                <PlayIcon className="h-4 w-4 inline-block mr-2" />
-                Test Output
-              </Button>
+              <div className="flex items-center gap-2">
+                <CopyButton textToCopy={optimizedPrompt} />
+                <Button
+                  onClick={handleTestOutput}
+                  variant="secondary"
+                  className="px-4 py-1 text-xs"
+                  disabled={isGenerating || !optimizedPrompt || optimizedPrompt.startsWith('//')}
+                >
+                  <PlayIcon className="h-4 w-4 inline-block mr-2" />
+                  Test Output
+                </Button>
+              </div>
             </div>
             <div className={`p-4 bg-brand-dark min-h-[160px] font-mono text-brand-light/90 text-sm border-2 border-brand-dark-accent text-left overflow-y-auto transition-shadow duration-300 ${isLoadingPrompt ? 'animate-pulse-glow border-brand-cyan/50' : ''}`}>
               {isLoadingPrompt && !optimizedPrompt ? <BlinkingCursor /> : (
@@ -161,9 +201,12 @@ The user's simple request is: "${userInput}"`;
           {/* Test Output */}
           {(isLoadingOutput || testOutput) && (
             <div className="mt-6 animate-fade-in">
-              <h3 className="text-sm font-mono uppercase text-brand-gray tracking-widest mb-2 text-left">
-                [ Test Output ]
-              </h3>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
+                  [ Test Output ]
+                </h3>
+                <CopyButton textToCopy={testOutput} />
+              </div>
               <div className={`p-4 bg-brand-dark min-h-[160px] font-mono text-brand-light/90 text-sm border-2 border-brand-dark-accent text-left overflow-y-auto transition-shadow duration-300 ${isLoadingOutput ? 'animate-pulse-glow border-brand-cyan/50' : ''}`}>
                 {isLoadingOutput && !testOutput ? <BlinkingCursor /> : (
                   <SyntaxHighlighter

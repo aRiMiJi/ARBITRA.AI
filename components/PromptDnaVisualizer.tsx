@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect, FormEvent, DragEvent, useRef } from 'react';
 import { GoogleGenAI, Type } from '@google/genai';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
-import { DnaIcon, ShuffleIcon } from './icons/Icons';
+import { DnaIcon, ShuffleIcon, CopyIcon } from './icons/Icons';
+import { getApiErrorMessage } from '../utils/errorUtils';
+import ErrorDisplay from './common/ErrorDisplay';
 
 type DnaBlock = {
   id: string;
@@ -14,6 +17,32 @@ type DnaBlock = {
 const BlinkingCursor: React.FC = () => (
   <span className="inline-block w-2.5 h-7 bg-brand-cyan animate-flicker" />
 );
+
+const CopyButton: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!textToCopy || isCopied) return;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }).catch(err => console.error('Failed to copy:', err));
+  };
+
+  const isDisabled = !textToCopy;
+
+  return (
+    <button
+      onClick={handleCopy}
+      disabled={isDisabled || isCopied}
+      className={`px-3 py-1 text-xs font-mono uppercase tracking-widest flex items-center gap-2 bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-gray hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-brand-gray/30 disabled:hover:text-brand-gray transition-all duration-200 ${isCopied ? '!border-brand-cyan !text-brand-cyan' : ''}`}
+      aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
+    >
+      <CopyIcon className="h-4 w-4" />
+      {isCopied ? 'Copied!' : 'Copy'}
+    </button>
+  );
+};
 
 const PromptDnaVisualizer: React.FC = () => {
   const [userInput, setUserInput] = useState('');
@@ -118,8 +147,7 @@ User Request: "${userInput}"`;
       const jsonResponse = JSON.parse(response.text);
       setPromptDna(jsonResponse.genes);
     } catch (err) {
-      console.error("Error generating DNA:", err);
-      setError("Failed to generate prompt DNA. Please check your request and try again.");
+      setError(getApiErrorMessage(err));
       setPromptDna([]);
     } finally {
       setIsLoading(false);
@@ -211,18 +239,18 @@ User Request: "${userInput}"`;
             disabled={isLoading}
           />
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button type="submit" variant="primary" className="flex-grow" disabled={isLoading || !userInput} withSound>
+            <Button type="submit" variant="primary" className="flex-grow" disabled={isLoading || !userInput}>
               <DnaIcon className="h-5 w-5 inline-block mr-2" />
               {isLoading ? 'Generating...' : 'Generate DNA'}
             </Button>
-            <Button type="button" onClick={() => handleGenerateDna(undefined, true)} variant="secondary" className="w-full sm:w-auto" disabled={isLoading || promptDna.length === 0} withSound>
+            <Button type="button" onClick={() => handleGenerateDna(undefined, true)} variant="secondary" className="w-full sm:w-auto" disabled={isLoading || promptDna.length === 0}>
               <ShuffleIcon className="h-5 w-5 inline-block mr-2" />
               Mutate
             </Button>
           </div>
         </form>
 
-        {error && <p className="mt-4 text-center text-brand-orange font-mono animate-fade-in">{error}</p>}
+        <ErrorDisplay message={error} />
 
         {/* DNA Strand */}
         <div className="mt-8 min-h-[12rem] flex items-center justify-center relative z-10">
@@ -273,9 +301,12 @@ User Request: "${userInput}"`;
         {/* Generated Prompt Output */}
         {generatedPrompt && !isLoading && (
           <div className="mt-8 animate-fade-in">
-            <h3 className="text-sm font-mono uppercase text-brand-gray tracking-widest mb-2 text-left">
-              [ Live Prompt Blueprint ]
-            </h3>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
+                [ Live Prompt Blueprint ]
+              </h3>
+              <CopyButton textToCopy={generatedPrompt} />
+            </div>
             <div className="p-4 bg-brand-dark font-mono text-brand-light/90 text-sm border-2 border-brand-dark-accent text-left overflow-y-auto max-h-[400px]">
               <SyntaxHighlighter
                 language="markdown"

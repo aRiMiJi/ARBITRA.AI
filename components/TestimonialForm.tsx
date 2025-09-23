@@ -102,7 +102,7 @@ const TestimonialForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </div>
       </fieldset>
       <div className="mt-8 pt-6 border-t-2 border-brand-dark-accent text-right">
-        <Button type="submit" variant="primary" disabled={isSubmitting} withSound>
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Submit Testimonial'}
         </Button>
       </div>

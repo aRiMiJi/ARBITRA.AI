@@ -1,15 +1,45 @@
+
 import React, { useState, useEffect, FormEvent } from 'react';
 import { GoogleGenAI, Type } from '@google/genai';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
-import { AlertIcon } from './icons/Icons';
+import { AlertIcon, CopyIcon } from './icons/Icons';
+import { getApiErrorMessage } from '../utils/errorUtils';
+import ErrorDisplay from './common/ErrorDisplay';
+
 
 const BlinkingCursor: React.FC = () => (
   <div className="flex justify-center items-center h-full">
     <span className="inline-block w-2.5 h-7 bg-brand-orange animate-flicker" />
   </div>
 );
+
+const CopyButton: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!textToCopy || isCopied) return;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }).catch(err => console.error('Failed to copy:', err));
+  };
+  
+  const isDisabled = !textToCopy;
+
+  return (
+    <button
+      onClick={handleCopy}
+      disabled={isDisabled || isCopied}
+      className={`px-3 py-1 text-xs font-mono uppercase tracking-widest flex items-center gap-2 bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-gray hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-brand-gray/30 disabled:hover:text-brand-gray transition-all duration-200 ${isCopied ? '!border-brand-cyan !text-brand-cyan' : ''}`}
+      aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
+    >
+      <CopyIcon className="h-4 w-4" />
+      {isCopied ? 'Copied!' : 'Copy'}
+    </button>
+  );
+};
 
 const IncidentMode: React.FC = () => {
   const [scenario, setScenario] = useState('');
@@ -66,8 +96,7 @@ User's failure scenario: "${scenario}"`;
       setCrisisPrompt(result.crisisPrompt);
       setMitigationPrompt(result.mitigationPrompt);
     } catch (err) {
-      console.error("Error during simulation:", err);
-      setError("Simulation failed. The model could not generate a valid response for this scenario. Please try rephrasing.");
+      setError(getApiErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -97,25 +126,25 @@ User's failure scenario: "${scenario}"`;
           variant="primary"
           className="w-full mt-4 !bg-brand-orange !shadow-[0_0_20px_theme(colors.brand-orange)]"
           disabled={isLoading || !scenario}
-          withSound
         >
           <AlertIcon className="h-5 w-5 inline-block mr-2" />
           {isLoading ? 'Simulating...' : 'Simulate Incident'}
         </Button>
       </form>
 
-      {error && (
-        <p className="mt-4 text-center text-brand-orange font-mono animate-fade-in">{error}</p>
-      )}
+      <ErrorDisplay message={error} />
 
       <div className="flex-grow mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden">
         {/* Crisis Prompt */}
         <div className="flex flex-col border-2 border-brand-orange/50 bg-brand-dark/30 p-4 animate-fade-in">
-          <h3 className="font-mono uppercase text-brand-orange tracking-widest border-b-2 border-brand-orange/30 pb-2">
-            [ Crisis Prompt // For Red Teaming ]
-          </h3>
-          <div className="flex-grow overflow-y-auto mt-2 min-h-[150px]">
-            {isLoading ? <BlinkingCursor /> : crisisPrompt ? (
+          <div className="flex justify-between items-center border-b-2 border-brand-orange/30 pb-2 mb-2">
+            <h3 className="font-mono uppercase text-brand-orange tracking-widest">
+              [ Crisis Prompt // For Red Teaming ]
+            </h3>
+            <CopyButton textToCopy={crisisPrompt} />
+          </div>
+          <div className="flex-grow overflow-y-auto min-h-[150px]">
+            {isLoading && !crisisPrompt ? <BlinkingCursor /> : crisisPrompt ? (
               <SyntaxHighlighter
                 language="markdown"
                 style={vscDarkPlus}
@@ -139,11 +168,14 @@ User's failure scenario: "${scenario}"`;
           className="flex flex-col border-2 border-brand-cyan/50 bg-brand-dark/30 p-4 animate-fade-in"
           style={{ animationDelay: '200ms' }}
         >
-          <h3 className="font-mono uppercase text-brand-cyan tracking-widest border-b-2 border-brand-cyan/30 pb-2">
-            [ Mitigation Prompt // For Defense ]
-          </h3>
-          <div className="flex-grow overflow-y-auto mt-2 min-h-[150px]">
-            {isLoading ? <BlinkingCursor /> : mitigationPrompt ? (
+          <div className="flex justify-between items-center border-b-2 border-brand-cyan/30 pb-2 mb-2">
+            <h3 className="font-mono uppercase text-brand-cyan tracking-widest">
+              [ Mitigation Prompt // For Defense ]
+            </h3>
+            <CopyButton textToCopy={mitigationPrompt} />
+          </div>
+          <div className="flex-grow overflow-y-auto min-h-[150px]">
+            {isLoading && !mitigationPrompt ? <BlinkingCursor /> : mitigationPrompt ? (
               <SyntaxHighlighter
                 language="markdown"
                 style={vscDarkPlus}

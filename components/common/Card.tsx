@@ -8,11 +8,12 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ children, className = '', isHighlighted = false }) => {
   const baseClasses =
-    'relative overflow-hidden bg-brand-dark-accent border-2 transition-all duration-300 p-8 h-full shadow-[0_8px_32px_0_#00fff711] hover:shadow-[0_0_24px_#ff760c38]';
-  // Border and glow depend on highlight state.
+    'relative overflow-hidden bg-brand-dark-accent border-2 transition-all duration-300 p-8 h-full transform hover:-translate-y-2';
+
+  // All border and shadow logic is now here for clarity, with enhanced hover effects.
   const highlightClasses = isHighlighted
-    ? 'border-brand-orange shadow-[0_0_40px_4px_#ff760c72]'
-    : 'border-brand-gray/30 hover:border-brand-cyan';
+    ? 'border-brand-orange shadow-[0_0_40px_4px_#ff760c72] hover:shadow-[0_0_55px_8px_#ff760c99] hover:border-orange-400'
+    : 'border-brand-gray/30 shadow-[0_8px_32px_0_#00fff711] hover:border-brand-cyan hover:shadow-[0_0_32px_#00f6ff55]';
 
   return (
     <div className={`${baseClasses} ${highlightClasses} ${className}`}>

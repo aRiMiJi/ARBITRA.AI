@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
-import { useSound } from '../../hooks/useSound';
-import { cyberClick } from '../../assets/sounds';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary';
   className?: string;
-  withSound?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
   className = '',
-  withSound = false,
   onClick,
   ...props
 }) => {
   const baseClasses =
     'relative group px-8 py-4 font-bold tracking-wider uppercase focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out overflow-hidden';
-  const playClickSound = useSound(cyberClick);
 
-  const [isThrottled, setIsThrottled] = useState(false);
   const [flicker, setFlicker] = useState(false);
 
   const variantClasses = {
@@ -32,11 +26,9 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (withSound && !isThrottled && !props.disabled) {
-      playClickSound();
-      setIsThrottled(true);
+    // Keep the visual flicker effect, but remove sound
+    if (!props.disabled) {
       setFlicker(true);
-      setTimeout(() => setIsThrottled(false), 200);
       setTimeout(() => setFlicker(false), 100);
     }
     if (onClick) {

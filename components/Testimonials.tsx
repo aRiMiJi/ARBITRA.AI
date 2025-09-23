@@ -11,7 +11,7 @@ const testimonialsData = [
     name: "Jane Doe",
     title: "Chief Technology Officer",
     company: "Innovate Corp",
-    avatar: "https://i.pravatar.cc/150?u=jane_doe",
+    avatar: "https://placehold.co/150x150/1A1A1A/EAEAEA?text=JD",
   },
   {
     quote:
@@ -19,7 +19,7 @@ const testimonialsData = [
     name: "John Smith",
     title: "Head of AI Development",
     company: "Future Systems",
-    avatar: "https://i.pravatar.cc/150?u=john_smith",
+    avatar: "https://placehold.co/150x150/1A1A1A/EAEAEA?text=JS",
   },
   {
     quote:
@@ -27,7 +27,7 @@ const testimonialsData = [
     name: "Emily White",
     title: "Senior Product Manager",
     company: "DataDriven Inc.",
-    avatar: "https://i.pravatar.cc/150?u=emily_white",
+    avatar: "https://placehold.co/150x150/1A1A1A/EAEAEA?text=EW",
   },
 ];
 
@@ -109,7 +109,7 @@ const Testimonials: React.FC = () => {
           ))}
         </div>
         <div className="mt-16 text-center">
-          <Button variant="secondary" onClick={() => setIsModalOpen(true)} withSound>
+          <Button variant="secondary" onClick={() => setIsModalOpen(true)}>
             Share Your Experience
           </Button>
         </div>

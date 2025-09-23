@@ -26,7 +26,8 @@ const EvolutionTree: React.FC = () => {
 
   const treeData = useMemo(() => {
     const tree: TreeNode[] = [];
-    const map = new Map(nodes.map(node => [node.id, { ...node, children: [] }]));
+    // FIX: Explicitly type `map` to ensure TypeScript correctly infers the types for its values, resolving errors related to properties like `parentId` and `children` being on an `unknown` type.
+    const map: Map<string, TreeNode> = new Map(nodes.map(node => [node.id, { ...node, children: [] }]));
     map.forEach(node => {
       if (node.parentId && map.has(node.parentId)) {
         map.get(node.parentId)!.children.push(node);
@@ -219,7 +220,7 @@ const EvolutionTree: React.FC = () => {
             />
           </div>
           <div className="text-right pt-4">
-            <Button type="submit" variant="primary" withSound>
+            <Button type="submit" variant="primary">
               Create Branch
             </Button>
           </div>

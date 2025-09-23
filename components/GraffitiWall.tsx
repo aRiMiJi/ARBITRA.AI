@@ -181,7 +181,7 @@ const GraffitiWall: React.FC = () => {
                 />
               ))}
             </div>
-            <Button type="submit" variant="primary" className="w-full" withSound>
+            <Button type="submit" variant="primary" className="w-full">
               Spray
             </Button>
           </div>

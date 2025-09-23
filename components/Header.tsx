@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
-// --- ArbitraLogo (unchanged from before) ---
-const LOGO_FONT = {
+// FIX: Explicitly type LOGO_FONT as React.CSSProperties to ensure type compatibility.
+const LOGO_FONT: CSSProperties = {
   fontFamily: '"IBM Plex Mono", monospace',
   fontWeight: 700,
   letterSpacing: '0.03em',
@@ -55,54 +55,65 @@ export const ArbitraLogo: React.FC<{ className?: string }> = ({ className }) => 
     </div>
   );
 };
-// --- End logo code ---
 
 const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'FAQ', href: '/faq' },
-  { label: 'Toolkit', href: '/toolkit' },
-  { label: 'Contact', href: '/contact' }
+  { label: 'Home', href: '#home' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'FAQ', href: '#faq' },
+  { label: 'Toolkit', href: '#tools' },
+  { label: 'Contact', href: '#contact' }
 ];
 
-const Header: React.FC = () => (
-  <header className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent">
-    <div>
-      <ArbitraLogo />
-    </div>
-    <nav className="flex items-center gap-1">
-      {navItems.map((item, idx) => (
-        <React.Fragment key={item.href}>
-          <a
-            href={item.href}
-            className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-colors duration-200 font-bold group"
-            tabIndex={0}
-            style={{ outline: 'none', letterSpacing: '0.09em' }}
-          >
-            {item.label}
-          </a>
-          {idx < navItems.length - 1 && (
-            <span className="flex items-center mx-1">
-              <span
-                className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-cyan transition-all duration-200"
-                style={{
-                  opacity: 0.48,
-                  transition: "background-color 230ms cubic-bezier(.4,0,.2,1), opacity 180ms cubic-bezier(.4,0,.2,1)"
-                }}
-              ></span>
-            </span>
-          )}
-        </React.Fragment>
-      ))}
-    </nav>
-    <style>{`
-      nav > a:focus + span > span,
-      nav > a:hover + span > span {
-        background: #00f6ff !important;
-        opacity: 1;
-      }
-    `}</style>
-  </header>
-);
+const Header: React.FC = () => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetIdWithHash: string) => {
+    e.preventDefault();
+    const targetId = targetIdWithHash.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  return (
+    <header id="home" className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent">
+      <div>
+        <ArbitraLogo />
+      </div>
+      <nav className="flex items-center gap-1">
+        {navItems.map((item, idx) => (
+          <React.Fragment key={item.href}>
+            <a
+              href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
+              className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-colors duration-200 font-bold group"
+              tabIndex={0}
+              style={{ outline: 'none', letterSpacing: '0.09em' }}
+            >
+              {item.label}
+            </a>
+            {idx < navItems.length - 1 && (
+              <span className="flex items-center mx-1">
+                <span
+                  className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-cyan transition-all duration-200"
+                  style={{
+                    opacity: 0.48,
+                    transition: "background-color 230ms cubic-bezier(.4,0,.2,1), opacity 180ms cubic-bezier(.4,0,.2,1)"
+                  }}
+                ></span>
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+      </nav>
+      <style>{`
+        nav > a:focus + span > span,
+        nav > a:hover + span > span {
+          background: #00f6ff !important;
+          opacity: 1;
+        }
+      `}</style>
+    </header>
+  );
+};
 
 export default Header;

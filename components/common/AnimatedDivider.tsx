@@ -56,7 +56,8 @@ const AnimatedDivider: React.FC = () => {
         style={{
           background:
             'linear-gradient(90deg, transparent, #00f6ff44 30%, transparent 70%)',
-          mixBlendMode: 'lighter',
+          // FIX: Changed invalid `mixBlendMode` value 'lighter' to 'lighten'.
+          mixBlendMode: 'lighten',
         }}
       />
     </div>

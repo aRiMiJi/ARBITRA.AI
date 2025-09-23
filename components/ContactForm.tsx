@@ -52,14 +52,14 @@ const ContactForm: React.FC = () => {
       aria-describedby="contact-description"
     >
       <p id="contact-description" className="sr-only">
-        Contact arbitra.ai to request a personalized demo. Secure your enterprise AI future and transform your AI development workflow.
+        Contact arbitra.ai. Send us a message for questions or demo requests using the form below.
       </p>
       <div className="text-center mb-16">
         <h2 id="contact-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
-          Ready to Secure Your AI Future?
+          Contact Us
         </h2>
         <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          Request a personalized demo and discover how arbitra.ai can transform your enterprise AI workflow.
+          Have a question or want to request a demo? Fill out the form below and our team will get back to you shortly.
         </p>
       </div>
       <div className="max-w-3xl mx-auto">
@@ -98,7 +98,7 @@ const ContactForm: React.FC = () => {
                 </div>
               </div>
               <div className="mt-8 text-center">
-                <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={submitStatus === 'submitting'} withSound>
+                <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={submitStatus === 'submitting'}>
                   {submitStatus === 'submitting' ? 'Submitting...' : 'Submit Request'}
                 </Button>
               </div>

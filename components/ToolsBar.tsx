@@ -7,12 +7,14 @@ import {
   AlertIcon,
   ExpandIcon,
   CloseIcon,
+  AnalyticsIcon,
 } from './icons/Icons';
 import PromptDnaVisualizer from './PromptDnaVisualizer';
 import PromptGenerator from './Hero';
 import GraffitiWall from './GraffitiWall';
 import EvolutionTree from './EvolutionTree';
 import IncidentMode from './IncidentMode';
+import AnalyticsDashboard from './AnalyticsDashboard';
 
 const tools: {
   id: string;
@@ -48,6 +50,13 @@ const tools: {
     Icon: TreeIcon,
     description: 'Trace and evolve prompt generations in a live tree.',
     component: EvolutionTree,
+  },
+  {
+    id: 'analytics-dashboard',
+    name: 'Analytics Dashboard',
+    Icon: AnalyticsIcon,
+    description: 'Visualize AI usage, success rates, and API consumption.',
+    component: AnalyticsDashboard,
   },
   {
     id: 'incident-mode',
@@ -175,7 +184,7 @@ const ToolsBar: React.FC = () => {
             A suite of industrial-grade utilities for professional prompt engineering and management.
           </p>
         </div>
-        <div className="flex gap-7 w-full max-w-5xl mx-auto justify-center">
+        <div className="flex flex-wrap gap-7 w-full max-w-6xl mx-auto justify-center">
           {tools.map((tool, idx) => (
             <ToolBlock
               key={tool.id}

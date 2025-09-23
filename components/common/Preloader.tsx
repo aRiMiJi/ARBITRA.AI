@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 
-const LOGO_FONT = {
+// FIX: Explicitly type LOGO_FONT as React.CSSProperties to ensure type compatibility.
+const LOGO_FONT: CSSProperties = {
   fontFamily: '"IBM Plex Mono", monospace',
   fontWeight: 700,
   textTransform: 'uppercase',
@@ -17,10 +18,11 @@ const Preloader: React.FC = () => {
   const [animDone, setAnimDone] = useState(false);
 
   useEffect(() => {
-    let timers: NodeJS.Timeout[] = [];
+    let timers: number[] = [];
     // Slower letter-by-letter appearance for drama
     MAIN_TEXT.forEach((_, i) => {
-      timers.push(setTimeout(() => setShown(s => {
+      // FIX: Use `window.setTimeout` to ensure the browser's implementation is used, which returns a number. This resolves the type error where `setTimeout` was inferred to return `NodeJS.Timeout`.
+      timers.push(window.setTimeout(() => setShown(s => {
         let arr = [...s];
         arr[i] = true;
         return arr;
@@ -35,7 +37,8 @@ const Preloader: React.FC = () => {
           return y + 0.8; // slow
         } else {
           cancelAnimationFrame(start);
-          setTimeout(() => setAnimDone(true), 2200); // long hold/fade
+          // FIX: Use `window.setTimeout` for consistency to avoid potential type issues.
+          window.setTimeout(() => setAnimDone(true), 2200); // long hold/fade
           return 30;
         }
       });

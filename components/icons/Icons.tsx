@@ -2,29 +2,99 @@ import React from 'react';
 type SVGProps = React.SVGProps<SVGSVGElement>;
 
 // ——— Brand/Cyber Icons ———
-export const ArbitraLogo: React.FC<SVGProps> = (props) => (
-  <svg viewBox="0 0 170 36" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <defs>
-      <filter id="glow" x="-30%" y="-70%" width="160%" height="280%">
-        <feGaussianBlur stdDeviation="3" result="glow" />
-        <feMerge>
-          <feMergeNode in="glow"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    <text
-      x="0" y="28"
-      fontFamily="monospace"
-      fontSize="30"
-      fontWeight="bold"
-      fill="currentColor"
-      letterSpacing="0.03em"
-      filter="url(#glow)"
-      style={{ textShadow: '0 0 18px #00f6ff, 0 0 8px #fff3' }}>
-      ARBITRA.AI
-    </text>
-  </svg>
+export const ArbitraIcon: React.FC<SVGProps> = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        {/* Paper */}
+        <path d="M8 4V2h8v2" />
+        {/* Roller & Top Carriage */}
+        <path d="M3 8V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2" />
+        <path d="M3 8h18" />
+        {/* Carriage Return Lever */}
+        <path d="M3 8v3l-1 1" />
+        {/* Type Hammers/Basket */}
+        <path d="M8 8.5 10 12h4l2-3.5" />
+        {/* Main Body Shape */}
+        <path d="M2 12.5c0-1 1-1.5 2-1.5h16c1 0 2 .5 2 1.5L20 19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1l-2-6.5z" />
+        {/* Keyboard hint */}
+        <path d="M6 14h12" />
+        <path d="M5 16h14" />
+        <path d="M7 18h10" />
+    </svg>
+);
+
+export const TypewriterLogo: React.FC<SVGProps> = (props) => (
+    <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <defs>
+            {/* A subtle glow filter that takes its color from the source graphic */}
+            <filter id="typewriter-glow" x="-25%" y="-25%" width="150%" height="150%">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur" in="SourceGraphic" />
+                <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+        
+        {/* Main group for the line art, applying the glow filter */}
+        <g fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" filter="url(#typewriter-glow)">
+            
+            {/* Main Body */}
+            <path d="M50,220 C20,220 20,180 50,180 H350 C380,180 380,220 350,220 Z" />
+            <path d="M60,180 C60,160 80,150 100,150 H300 C320,150 340,160 340,180" />
+            
+            {/* Keyboard Area */}
+            <g strokeOpacity="0.7">
+                <path d="M80,215 H320" />
+                <path d="M85,205 H315" />
+                <path d="M90,195 H310" />
+                <path d="M95,185 H305" />
+                
+                {/* Simplified Keys */}
+                <circle cx="90" cy="210" r="4" /> <circle cx="110" cy="210" r="4" /> <circle cx="130" cy="210" r="4" /> <circle cx="150" cy="210" r="4" /> <circle cx="170" cy="210" r="4" /> <circle cx="190" cy="210" r="4" /> <circle cx="210" cy="210" r="4" /> <circle cx="230" cy="210" r="4" /> <circle cx="250" cy="210" r="4" /> <circle cx="270" cy="210" r="4" /> <circle cx="290" cy="210" r="4" /> <circle cx="310" cy="210" r="4" />
+                <circle cx="95" cy="200" r="4" /> <circle cx="115" cy="200" r="4" /> <circle cx="135" cy="200" r="4" /> <circle cx="155" cy="200" r="4" /> <circle cx="175" cy="200"r="4" /> <circle cx="195" cy="200" r="4" /> <circle cx="215" cy="200" r="4" /> <circle cx="235" cy="200" r="4" /> <circle cx="255" cy="200" r="4" /> <circle cx="275" cy="200" r="4" /> <circle cx="295" cy="200" r="4" />
+                <circle cx="100" cy="190" r="4" /> <circle cx="120" cy="190" r="4" /> <circle cx="140" cy="190" r="4" /> <circle cx="160" cy="190" r="4" /> <circle cx="180" cy="190" r="4" /> <circle cx="200" cy="190" r="4" /> <circle cx="220" cy="190" r="4" /> <circle cx="240" cy="190" r="4" /> <circle cx="260" cy="190" r="4" /> <circle cx="280" cy="190" r="4" />
+            </g>
+
+            {/* Top Carriage Section */}
+            <path d="M100,150 L80,90 H320 L300,150" />
+            <rect x="70" y="70" width="260" height="20" rx="5" />
+
+            {/* Roller */}
+            <path d="M60,70 H340" />
+            <path d="M50,70 L30,70 C20,70 20,60 30,60 H50" />
+            <path d="M350,70 L370,70 C380,70 380,60 370,60 H350" />
+            <rect x="50" y="55" width="300" height="15" rx="7.5" />
+            
+            {/* Type Hammers Area */}
+            <g strokeOpacity="0.8">
+                <path d="M180,150 C180,130 190,120 200,120 C210,120 220,130 220,150" />
+                <path d="M190,145 V125" />
+                <path d="M210,145 V125" />
+                <path d="M200,148 V122" />
+            </g>
+
+            {/* Paper with a subtle, theme-aware background */}
+            <rect x="120" y="20" width="160" height="100" strokeWidth="2" fill="currentColor" fillOpacity="0.05" />
+        </g>
+        
+        {/* The brand name, rendered separately for clarity without the glow */}
+        <text 
+            x="200" 
+            y="75" 
+            fill="currentColor" 
+            stroke="none" 
+            style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontWeight: 700,
+                fontSize: '28px',
+                textAnchor: 'middle',
+                dominantBaseline: 'middle',
+                letterSpacing: '2px',
+            }}
+        >
+            ARBITRA
+        </text>
+    </svg>
 );
 
 export const DnaIcon: React.FC<SVGProps> = (props) => (
@@ -69,6 +139,15 @@ export const TreeIcon: React.FC<SVGProps> = (props) => (
     <path d="M14 7c2 2.5 4 5.5 6.5 7" stroke="#fff7" />
   </svg>
 );
+
+export const AnalyticsIcon: React.FC<SVGProps> = (props) => (
+    <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M4 22V6" stroke="#00f6ff" />
+      <path d="M11 22V12" stroke="#00f6ff" />
+      <path d="M18 22V2" stroke="#00f6ff" />
+      <path d="M25 22V16" stroke="#ff7a00" />
+    </svg>
+  );
 
 // ——— Utility/Small Icons (Original system + badges, no import) ———
 
@@ -149,9 +228,9 @@ export const GDPRBadge: React.FC<SVGProps> = (props) => (
   </div>
 );
 
-export const TwitterIcon: React.FC<SVGProps> = (props) => (
+export const XIcon: React.FC<SVGProps> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.22-1.95-.55v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21c7.35 0 11.37-6.08 11.37-11.37 0-.17 0-.34-.01-.51.78-.57 1.45-1.28 1.98-2.08z" />
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
 
@@ -164,6 +243,12 @@ export const LinkedInIcon: React.FC<SVGProps> = (props) => (
 export const GithubIcon: React.FC<SVGProps> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.034c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+  </svg>
+);
+
+export const TelegramIcon: React.FC<SVGProps> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931L23.43 3.246c.346-1.659-.49-2.324-1.525-1.866L1.225 10.61c-1.548.575-1.54 1.36.243 1.654l5.411 1.692 12.66-7.957c.595-.374 1.14.043.682.433L9.417 15.181z"/>
   </svg>
 );
 
@@ -199,5 +284,12 @@ export const PlusIcon: React.FC<SVGProps> = (props) => (
 export const MinusIcon: React.FC<SVGProps> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <line x1="5" y1="12" x2="19" y2="12"></line>
+  </svg>
+);
+
+export const CopyIcon: React.FC<SVGProps> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
   </svg>
 );

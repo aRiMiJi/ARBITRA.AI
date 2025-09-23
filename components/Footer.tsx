@@ -1,11 +1,12 @@
 import React from 'react';
-import { ArbitraLogo, TwitterIcon, LinkedInIcon, GithubIcon } from './icons/Icons';
+import { ArbitraIcon, XIcon, LinkedInIcon, GithubIcon, TelegramIcon } from './icons/Icons';
 
 const Footer: React.FC = () => {
   const socialLinks = [
-    { name: 'Twitter', icon: TwitterIcon, href: '#' },
+    { name: 'X', icon: XIcon, href: '#' },
     { name: 'LinkedIn', icon: LinkedInIcon, href: '#' },
     { name: 'GitHub', icon: GithubIcon, href: '#' },
+    { name: 'Telegram', icon: TelegramIcon, href: '#' },
   ];
 
   const footerNav = [
@@ -29,8 +30,9 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
           {/* Logo and about */}
           <div className="flex-1">
-            <a href="#hero" onClick={(e) => handleNavClick(e, 'hero')} aria-label="Back to top">
-              <ArbitraLogo className="h-8 text-brand-light hover:text-brand-cyan transition-colors duration-200" />
+            <a href="#hero" onClick={(e) => handleNavClick(e, 'hero')} aria-label="Back to top" className="group flex items-center gap-2 transition-colors duration-200">
+              <ArbitraIcon className="h-8 w-8 text-brand-light transition-colors group-hover:text-brand-cyan" />
+              <span className="font-mono text-xl font-bold text-brand-light transition-colors group-hover:text-brand-cyan">arbitra.ai</span>
             </a>
             <p className="mt-4 text-brand-gray max-w-xs">
               Securing the future of enterprise AI with compliant, licensed, and auditable prompt management.
