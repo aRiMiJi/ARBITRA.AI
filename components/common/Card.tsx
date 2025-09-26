@@ -12,8 +12,8 @@ const Card: React.FC<CardProps> = ({ children, className = '', isHighlighted = f
 
   // All border and shadow logic is now here for clarity, with enhanced hover effects.
   const highlightClasses = isHighlighted
-    ? 'border-brand-orange shadow-[0_0_40px_4px_#ff760c72] hover:shadow-[0_0_55px_8px_#ff760c99] hover:border-orange-400'
-    : 'border-brand-gray/30 shadow-[0_8px_32px_0_#00fff711] hover:border-brand-cyan hover:shadow-[0_0_32px_#00f6ff55]';
+    ? 'border-brand-orange shadow-[0_0_40px_4px_#ff760c72] hover:shadow-[0_0_35px_5px_#ff760c88] hover:border-orange-400'
+    : 'border-brand-gray/30 shadow-[0_8px_32px_0_#00fff711] hover:border-brand-cyan hover:shadow-[0_0_20px_#00f6ff44]';
 
   return (
     <div className={`${baseClasses} ${highlightClasses} ${className}`}>

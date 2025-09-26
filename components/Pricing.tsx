@@ -65,58 +65,64 @@ const Pricing: React.FC = () => {
     <section
       id="pricing"
       ref={sectionRef}
-      className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
-      style={{ animationDelay: '0.4s' }}
+      className={`py-20 sm:py-24`}
       aria-labelledby="pricing-heading"
       aria-describedby="pricing-description"
     >
       <p id="pricing-description" className="sr-only">
         Transparent and scalable pricing plans for arbitra.ai. Choose from Starter, Pro, and custom Enterprise solutions to fit your team's needs.
       </p>
-      <div className="text-center mb-16">
-        <h2 id="pricing-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Transparent & Scalable Pricing</h2>
+      <div className={`text-center mb-16 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}>
+        <div className="glitch-text-container" data-text="Transparent & Scalable Pricing">
+          <h2 id="pricing-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Transparent & Scalable Pricing</h2>
+        </div>
         <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
           Choose the plan that fits your needs. No hidden fees, ever.
         </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         {pricingPlans.map((plan, index) => (
-          <Card
+          <div
             key={index}
-            className={`flex flex-col ${plan.isHighlighted ? 'border-brand-cyan shadow-[0_0_32px_#00fff7cc]' : ''}`}
-            isHighlighted={plan.isHighlighted}
+            className={`h-full opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+            style={{ animationDelay: `${index * 0.15}s` }}
           >
-            {plan.isHighlighted && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-brand-cyan text-brand-dark text-sm font-bold tracking-widest uppercase shadow-lg ring-2 ring-brand-cyan/40">
-                Most Popular
+            <Card
+              className={`flex flex-col ${plan.isHighlighted ? 'border-brand-cyan shadow-[0_0_32px_#00fff7cc]' : ''}`}
+              isHighlighted={plan.isHighlighted}
+            >
+              {plan.isHighlighted && (
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-brand-cyan text-brand-dark text-sm font-bold tracking-widest uppercase shadow-lg ring-2 ring-brand-cyan/40">
+                  Most Popular
+                </div>
+              )}
+              <div className="flex-grow">
+                <h3 className="text-2xl font-bold font-sans text-brand-light uppercase">{plan.name}</h3>
+                <div className="my-4">
+                  <span className="text-5xl font-bold font-sans text-white">{plan.price}</span>
+                  <span className="text-brand-gray">{plan.period}</span>
+                </div>
+                <p className="text-brand-gray mb-8 h-20">{plan.description}</p>
+                <ul className="space-y-4 text-brand-light">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center">
+                      <span className="text-brand-cyan mr-3 font-bold">+</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
-            <div className="flex-grow">
-              <h3 className="text-2xl font-bold font-sans text-brand-light uppercase">{plan.name}</h3>
-              <div className="my-4">
-                <span className="text-5xl font-bold font-sans text-white">{plan.price}</span>
-                <span className="text-brand-gray">{plan.period}</span>
+              <div className="mt-10">
+                <Button onClick={handleButtonClick} variant={plan.isHighlighted ? 'primary' : 'secondary'} className="w-full">
+                  {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
+                </Button>
               </div>
-              <p className="text-brand-gray mb-8 h-20">{plan.description}</p>
-              <ul className="space-y-4 text-brand-light">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center">
-                    <span className="text-brand-cyan mr-3 font-bold">+</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-10">
-              <Button onClick={handleButtonClick} variant={plan.isHighlighted ? 'primary' : 'secondary'} className="w-full">
-                {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
-              </Button>
-            </div>
-          </Card>
+            </Card>
+          </div>
         ))}
       </div>
 
-      <div className="mt-24 text-center">
+      <div className={`mt-24 text-center opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '0.5s' }}>
         <h3 className="text-sm font-bold tracking-widest text-brand-gray uppercase">
           Security is built into every plan
         </h3>

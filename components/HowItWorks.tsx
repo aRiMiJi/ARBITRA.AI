@@ -59,7 +59,9 @@ const HowItWorks: React.FC = () => {
       aria-labelledby="how-it-works-heading"
     >
       <div className="text-center mb-16">
-        <h2 id="how-it-works-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">How It Works</h2>
+        <div className="glitch-text-container" data-text="How It Works">
+          <h2 id="how-it-works-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">How It Works</h2>
+        </div>
         <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">A streamlined, four-step process to secure and manage your entire prompt ecosystem.</p>
       </div>
       <div className="relative">

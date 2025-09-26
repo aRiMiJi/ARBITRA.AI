@@ -12,8 +12,11 @@ import ScrollToTopButton from './components/common/ScrollToTopButton';
 import Preloader from './components/common/Preloader';
 import AnimatedDivider from './components/common/AnimatedDivider';
 import ToolsBar from './components/ToolsBar';
+import NewsletterSignup from './components/NewsletterSignup';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { AccessibilityProvider } from './contexts/AccessibilityContext';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,6 +49,7 @@ const App: React.FC = () => {
         <HowItWorks />
         <AnimatedDivider />
         <Pricing />
+        <AnimatedDivider />
         <Testimonials />
         <AnimatedDivider />
         <FAQ />
@@ -53,11 +57,24 @@ const App: React.FC = () => {
         <ToolsBar />
         <AnimatedDivider />
         <ContactForm />
+        <AnimatedDivider />
+        <NewsletterSignup />
       </main>
       <Footer />
       <ScrollToTopButton />
     </div>
   );
 };
+
+const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <AccessibilityProvider>
+        <AppContent />
+      </AccessibilityProvider>
+    </LanguageProvider>
+  );
+};
+
 
 export default App;

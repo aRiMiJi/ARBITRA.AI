@@ -55,9 +55,11 @@ const ContactForm: React.FC = () => {
         Contact arbitra.ai. Send us a message for questions or demo requests using the form below.
       </p>
       <div className="text-center mb-16">
-        <h2 id="contact-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
-          Contact Us
-        </h2>
+        <div className="glitch-text-container" data-text="Contact Us">
+          <h2 id="contact-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
+            Contact Us
+          </h2>
+        </div>
         <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
           Have a question or want to request a demo? Fill out the form below and our team will get back to you shortly.
         </p>

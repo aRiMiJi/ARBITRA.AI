@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-persona="default">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -76,6 +76,164 @@
     .animate-toolglitch {
       animation: toolglitch 0.35s cubic-bezier(.7,-0.16,.28,1.24) both;
     }
+
+    @keyframes textGlitchBefore {
+      0% { clip-path: inset(85% 0 10% 0); } 5% { clip-path: inset(20% 0 75% 0); } 10% { clip-path: inset(90% 0 5% 0); } 15% { clip-path: inset(10% 0 88% 0); } 20% { clip-path: inset(70% 0 25% 0); } 25% { clip-path: inset(95% 0 2% 0); } 30% { clip-path: inset(35% 0 60% 0); } 35% { clip-path: inset(80% 0 15% 0); } 40% { clip-path: inset(22% 0 70% 0); } 45% { clip-path: inset(65% 0 30% 0); } 50% { clip-path: inset(92% 0 4% 0); } 55% { clip-path: inset(45% 0 50% 0); } 60% { clip-path: inset(15% 0 80% 0); } 65% { clip-path: inset(75% 0 20% 0); } 70% { clip-path: inset(5% 0 90% 0); } 75% { clip-path: inset(88% 0 10% 0); } 80% { clip-path: inset(25% 0 70% 0); } 85% { clip-path: inset(2% 0 95% 0); } 90% { clip-path: inset(60% 0 35% 0); } 95% { clip-path: inset(15% 0 80% 0); } 100% { clip-path: inset(70% 0 22% 0); }
+    }
+    @keyframes textGlitchAfter {
+      0% { clip-path: inset(10% 0 85% 0); } 5% { clip-path: inset(75% 0 20% 0); } 10% { clip-path: inset(5% 0 90% 0); } 15% { clip-path: inset(88% 0 10% 0); } 20% { clip-path: inset(25% 0 70% 0); } 25% { clip-path: inset(2% 0 95% 0); } 30% { clip-path: inset(60% 0 35% 0); } 35% { clip-path: inset(15% 0 80% 0); } 40% { clip-path: inset(70% 0 22% 0); } 45% { clip-path: inset(30% 0 65% 0); } 50% { clip-path: inset(4% 0 92% 0); } 55% { clip-path: inset(50% 0 45% 0); } 60% { clip-path: inset(80% 0 15% 0); } 65% { clip-path: inset(20% 0 75% 0); } 70% { clip-path: inset(90% 0 5% 0); } 75% { clip-path: inset(10% 0 88% 0); } 80% { clip-path: inset(70% 0 25% 0); } 85% { clip-path: inset(95% 0 2% 0); } 90% { clip-path: inset(35% 0 60% 0); } 95% { clip-path: inset(80% 0 15% 0); } 100% { clip-path: inset(22% 0 70% 0); }
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-10%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .glitch-text-container {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .glitch-text-container > .glitch-text {
+      transition: text-shadow 0.2s ease-out;
+    }
+    .glitch-text-container:hover > .glitch-text {
+      text-shadow: 0 0 8px currentColor;
+    }
+    .glitch-text-container::before,
+    .glitch-text-container::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #101010;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+    }
+    .glitch-text-container:hover::before,
+    .glitch-text-container:hover::after {
+      opacity: 1;
+    }
+    .glitch-text-container::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff7a00;
+      animation: textGlitchBefore 2.5s infinite linear alternate-reverse;
+    }
+    .glitch-text-container::after {
+      left: -2px;
+      text-shadow: -2px 0 #00f6ff, 2px 2px #ff7a00;
+      animation: textGlitchAfter 2s infinite linear alternate-reverse;
+    }
+    .scanline-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10%;
+      min-height: 20px;
+      background: linear-gradient(to bottom, rgba(0, 246, 255, 0), rgba(0, 246, 255, 0.08) 50%, rgba(0, 246, 255, 0));
+      opacity: 0.8;
+      filter: blur(2px);
+      animation: scanline 8s linear infinite;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    /* --- ACCESSIBILITY PERSONA STYLES --- */
+
+    /* Base for motion reduction */
+    html[data-persona="epilepsy-safe"] *,
+    html[data-persona="seizure-safe"] *,
+    html[data-persona="adhd-friendly"] * {
+        animation-duration: 0.01s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01s !important;
+        scroll-behavior: auto !important;
+    }
+    html[data-persona="epilepsy-safe"] .glitch-text-container:hover::before,
+    html[data-persona="epilepsy-safe"] .glitch-text-container:hover::after,
+    html[data-persona="seizure-safe"] .glitch-text-container:hover::before,
+    html[data-persona="seizure-safe"] .glitch-text-container:hover::after,
+    html[data-persona="adhd-friendly"] .glitch-text-container:hover::before,
+    html[data-persona="adhd-friendly"] .glitch-text-container:hover::after {
+        opacity: 0 !important;
+    }
+    html[data-persona="epilepsy-safe"] .scanline-container::after,
+    html[data-persona="seizure-safe"] .scanline-container::after {
+        display: none !important;
+    }
+
+    /* Low Vision / Elderly */
+    html[data-persona="low-vision"] body,
+    html[data-persona="for-the-elderly"] body {
+        font-size: 18px;
+    }
+    html[data-persona="low-vision"] h1, html[data-persona="for-the-elderly"] h1 { font-size: 2.75rem; }
+    html[data-persona="low-vision"] h2, html[data-persona="for-the-elderly"] h2 { font-size: 2.25rem; }
+    html[data-persona="low-vision"] h3, html[data-persona="for-the-elderly"] h3 { font-size: 1.75rem; }
+    html[data-persona="low-vision"] button, html[data-persona="for-the-elderly"] button { padding: 1rem 2rem; }
+
+    /* Dyslexia Friendly */
+    html[data-persona="dyslexia-friendly"] body {
+        letter-spacing: 0.05em;
+        line-height: 1.8;
+        word-spacing: 0.15em;
+    }
+    html[data-persona="dyslexia-friendly"] body {
+        background-color: #212121; /* Slightly off-black */
+    }
+
+    /* Astigmatism */
+    html[data-persona="astigmatism"] .text-brand-cyan,
+    html[data-persona="astigmatism"] .text-brand-orange {
+        text-shadow: none !important;
+        filter: brightness(0.9);
+    }
+    html[data-persona="astigmatism"] ::-webkit-scrollbar-thumb {
+        box-shadow: none;
+    }
+    html[data-persona="astigmatism"] .shadow-\[0_0_40px_4px_\#ff760c72\],
+    html[data-persona="astigmatism"] .shadow-\[0_8px_32px_0_\#00fff711\] {
+        box-shadow: 0 4px 10px #00000055 !important;
+    }
+
+    /* Color Blindness */
+    html[data-persona="color-blindness"] .border-brand-orange { border: 3px dashed #ff7a00 !important; }
+    html[data-persona="color-blindness"] .border-brand-cyan { border: 3px solid #00f6ff !important; }
+    html[data-persona="color-blindness"] .text-brand-orange::before { content: '⚠️ '; }
+    html[data-persona="color-blindness"] .text-brand-cyan::before { content: 'ℹ️ '; }
+    html[data-persona="color-blindness"] [class*="bg-brand-cyan"] { filter: grayscale(50%) brightness(1.2); }
+    html[data-persona="color-blindness"] [class*="bg-brand-orange"] { filter: grayscale(50%) brightness(1.1); }
+    
+    /* Motor Disabilities / Keyboard Navigation / Blindness (Focus) */
+    html[data-persona="motor-disabilities"] :focus-visible,
+    html[data-persona="keyboard-navigation"] :focus-visible,
+    html[data-persona="blindness"] :focus-visible {
+        outline: 4px solid #ff7a00 !important;
+        outline-offset: 4px;
+        box-shadow: 0 0 15px #ff7a00 !important;
+        border-radius: 2px;
+    }
+    /* Hide decorative elements for screen readers in Blindness mode */
+    html[data-persona="blindness"] [aria-hidden="true"] {
+        display: none !important;
+    }
   </style>
   
   <script>
@@ -106,6 +264,8 @@
             'preloader-shine': 'preloaderShine 2s ease-in-out infinite',
             'draw-line': 'drawLine 1s ease-out forwards',
             'spin': 'spin 1.5s linear infinite',
+            'cyberflicker': 'cyberflicker 0.1s ease-in-out',
+            'flick-twice': 'flickTwice 0.3s ease-out',
           },
           keyframes: {
             fadeIn: {
@@ -113,7 +273,7 @@
               '100%': { opacity: 1 },
             },
             fadeInUp: {
-              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '0%': { opacity: 0, transform: 'translateY(10px)' },
               '100%': { opacity: 1, transform: 'translateY(0)' },
             },
             fadeInDown: {
@@ -136,6 +296,16 @@
             flicker: {
               '0%, 100%': { opacity: 1 },
               '50%': { opacity: 0.5 },
+            },
+            cyberflicker: {
+              '0%': { filter: 'brightness(1) contrast(1)' },
+              '50%': { filter: 'brightness(1.5) contrast(1.2) drop-shadow(0 0 5px #ff7a00)' },
+              '100%': { filter: 'brightness(1) contrast(1)' },
+            },
+            flickTwice: {
+              '0%, 100%': { transform: 'scaleX(0)', opacity: 0 },
+              '20%, 80%': { transform: 'scaleX(1)', opacity: 0.75 },
+              '50%': { transform: 'scaleX(1.2)', opacity: 1 },
             },
             pulseGlow: {
               '0%, 100%': { boxShadow: '0 0 10px rgba(0, 246, 255, 0.2)', borderColor: 'rgba(0, 246, 255, 0.3)' },

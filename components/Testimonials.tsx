@@ -64,51 +64,58 @@ const Testimonials: React.FC = () => {
       <section
         id="testimonials"
         ref={sectionRef}
-        className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
-        style={{ animationDelay: '0.4s' }}
+        className={`py-20 sm:py-24`}
         aria-labelledby="testimonials-heading"
         aria-describedby="testimonials-description"
       >
         <p id="testimonials-description" className="sr-only">
           See how industry leaders are using arbitra.ai to revolutionize their AI workflows. Read customer testimonials about our security, control, and performance.
         </p>
-        <div className="text-center mb-16">
-          <h2
-            id="testimonials-heading"
-            className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase"
-          >
-            Trusted by Industry Leaders
-          </h2>
+        <div className={`text-center mb-16 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}>
+          <div className="glitch-text-container" data-text="Trusted by Industry Leaders">
+            <h2
+              id="testimonials-heading"
+              className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase"
+            >
+              Trusted by Industry Leaders
+            </h2>
+          </div>
           <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
             Hear what our customers have to say about arbitra.ai.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonialsData.map((testimonial, index) => (
-            <Card key={index} className="flex flex-col justify-between">
-              <div className="flex-grow">
-                <p className="text-8xl font-sans font-bold text-brand-cyan/20 leading-none">“</p>
-                <blockquote className="text-brand-light -mt-8">"{testimonial.quote}"</blockquote>
-              </div>
-              <div className="mt-6 flex items-center">
-                <div className="w-14 h-14 p-0.5 border-2 border-transparent hover:border-brand-cyan rounded-full transition-colors duration-200">
-                  <img
-                    className="h-full w-full object-cover filter grayscale hover:grayscale-0 rounded-full transition-all duration-200"
-                    src={testimonial.avatar}
-                    alt={`Avatar of ${testimonial.name}`}
-                  />
+            <div
+              key={index}
+              className={`h-full opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+              style={{ animationDelay: `${index * 0.15}s` }}
+            >
+              <Card className="flex flex-col justify-between">
+                <div className="flex-grow">
+                  <p className="text-8xl font-sans font-bold text-brand-cyan/20 leading-none">“</p>
+                  <blockquote className="text-brand-light -mt-8">"{testimonial.quote}"</blockquote>
                 </div>
-                <div className="ml-4">
-                  <p className="font-bold font-sans text-brand-light uppercase">{testimonial.name}</p>
-                  <p className="text-sm text-brand-gray">
-                    {testimonial.title}, {testimonial.company}
-                  </p>
+                <div className="mt-6 flex items-center">
+                  <div className="w-14 h-14 p-0.5 border-2 border-transparent hover:border-brand-cyan rounded-full transition-colors duration-200">
+                    <img
+                      className="h-full w-full object-cover filter grayscale hover:grayscale-0 rounded-full transition-all duration-200"
+                      src={testimonial.avatar}
+                      alt={`Avatar of ${testimonial.name}`}
+                    />
+                  </div>
+                  <div className="ml-4">
+                    <p className="font-bold font-sans text-brand-light uppercase">{testimonial.name}</p>
+                    <p className="text-sm text-brand-gray">
+                      {testimonial.title}, {testimonial.company}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           ))}
         </div>
-        <div className="mt-16 text-center">
+        <div className={`mt-16 text-center opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '0.5s' }}>
           <Button variant="secondary" onClick={() => setIsModalOpen(true)}>
             Share Your Experience
           </Button>

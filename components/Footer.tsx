@@ -16,21 +16,13 @@ const Footer: React.FC = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <footer className="bg-brand-dark-accent border-t-2 border-brand-gray/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
           {/* Logo and about */}
           <div className="flex-1">
-            <a href="#hero" onClick={(e) => handleNavClick(e, 'hero')} aria-label="Back to top" className="group flex items-center gap-2 transition-colors duration-200">
+            <a href="#home" aria-label="Back to top" className="group flex items-center gap-2 transition-colors duration-200">
               <ArbitraIcon className="h-8 w-8 text-brand-light transition-colors group-hover:text-brand-cyan" />
               <span className="font-mono text-xl font-bold text-brand-light transition-colors group-hover:text-brand-cyan">arbitra.ai</span>
             </a>
@@ -44,7 +36,6 @@ const Footer: React.FC = () => {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => handleNavClick(e, item.href.substring(1))}
                 className="text-brand-gray hover:text-brand-cyan transition-colors duration-200 uppercase tracking-wider"
               >
                 {item.name}

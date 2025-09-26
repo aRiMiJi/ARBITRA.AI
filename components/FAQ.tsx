@@ -109,9 +109,11 @@ const FAQ: React.FC = () => {
       aria-labelledby="faq-heading"
     >
       <div className="text-center mb-16">
-        <h2 id="faq-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
-          Frequently Asked Questions
-        </h2>
+        <div className="glitch-text-container" data-text="Frequently Asked Questions">
+          <h2 id="faq-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
+            Frequently Asked Questions
+          </h2>
+        </div>
         <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
           Have questions? We've got answers. If you can't find what you're looking for, feel free to contact us.
         </p>

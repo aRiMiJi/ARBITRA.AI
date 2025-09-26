@@ -60,9 +60,11 @@ const Features: React.FC = () => {
       aria-labelledby="features-heading"
     >
       <div className="text-center mb-16">
-        <h2 id="features-heading" className="text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
-          Built for the Enterprise
-        </h2>
+        <div className="glitch-text-container" data-text="Built for the Enterprise">
+          <h2 id="features-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
+            Built for the Enterprise
+          </h2>
+        </div>
         <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
           arbitra.ai provides the critical infrastructure to secure, manage, and scale your AI development.
         </p>
@@ -75,6 +77,7 @@ const Features: React.FC = () => {
             style={{ animationDelay: feature.delay }}
             onClick={() => handleCardClick(index)}
             tabIndex={0}
+            role="button"
             aria-pressed={activeCard === index}
             onKeyDown={e => {
               if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);

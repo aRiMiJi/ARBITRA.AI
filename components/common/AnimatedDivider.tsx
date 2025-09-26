@@ -28,7 +28,7 @@ const AnimatedDivider: React.FC = () => {
       ref={dividerRef}
       className="relative my-24 w-full h-[2px] overflow-visible"
       role="separator"
-      aria-label="Section Divider"
+      aria-hidden="true"
     >
       {/* Subtle gray background */}
       <div className="absolute inset-0 bg-brand-gray/20 h-px" />
@@ -40,8 +40,8 @@ const AnimatedDivider: React.FC = () => {
           will-change-transform
         `}
         style={{
-          boxShadow: '0 0 25px 4px #00f6ff, 0 0 8px 1.5px #0ff',
-          filter: 'drop-shadow(0 0 12px #00f6ffa0)',
+          boxShadow: '0 0 12px 2px #00f6ff, 0 0 4px 1px #0ff',
+          filter: 'drop-shadow(0 0 8px #00f6ff80)',
         }}
       >
         {/* Brutal cyber edges */}
@@ -56,7 +56,6 @@ const AnimatedDivider: React.FC = () => {
         style={{
           background:
             'linear-gradient(90deg, transparent, #00f6ff44 30%, transparent 70%)',
-          // FIX: Changed invalid `mixBlendMode` value 'lighter' to 'lighten'.
           mixBlendMode: 'lighten',
         }}
       />

@@ -1,4 +1,6 @@
 import React, { CSSProperties } from 'react';
+import LanguageToggle from './LanguageToggle';
+import AccessibilityToggle from './AccessibilityToggle';
 
 // FIX: Explicitly type LOGO_FONT as React.CSSProperties to ensure type compatibility.
 const LOGO_FONT: CSSProperties = {
@@ -21,7 +23,7 @@ export const ArbitraLogo: React.FC<{ className?: string }> = ({ className }) => 
       tabIndex={0}
       className={`relative select-none outline-none cursor-pointer ${className || ''}`}
       style={{ display: 'inline-block' }}
-      aria-label="arbitra"
+      aria-label="arbitra.ai logo"
     >
       <span
         style={{
@@ -47,6 +49,7 @@ export const ArbitraLogo: React.FC<{ className?: string }> = ({ className }) => 
             whiteSpace: 'nowrap',
             willChange: 'width, max-width, opacity'
           }}
+          aria-hidden="true"
         >
           RBITR
         </span>
@@ -65,46 +68,41 @@ const navItems = [
 ];
 
 const Header: React.FC = () => {
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetIdWithHash: string) => {
-    e.preventDefault();
-    const targetId = targetIdWithHash.substring(1);
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <header id="home" className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent">
       <div>
         <ArbitraLogo />
       </div>
-      <nav className="flex items-center gap-1">
-        {navItems.map((item, idx) => (
-          <React.Fragment key={item.href}>
-            <a
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.href)}
-              className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-colors duration-200 font-bold group"
-              tabIndex={0}
-              style={{ outline: 'none', letterSpacing: '0.09em' }}
-            >
-              {item.label}
-            </a>
-            {idx < navItems.length - 1 && (
-              <span className="flex items-center mx-1">
-                <span
-                  className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-cyan transition-all duration-200"
-                  style={{
-                    opacity: 0.48,
-                    transition: "background-color 230ms cubic-bezier(.4,0,.2,1), opacity 180ms cubic-bezier(.4,0,.2,1)"
-                  }}
-                ></span>
-              </span>
-            )}
-          </React.Fragment>
-        ))}
-      </nav>
+      <div className="flex items-center gap-4">
+        <nav className="flex items-center gap-1">
+          {navItems.map((item, idx) => (
+            <React.Fragment key={item.href}>
+              <a
+                href={item.href}
+                className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-colors duration-200 font-bold group"
+                tabIndex={0}
+                style={{ outline: 'none', letterSpacing: '0.09em' }}
+              >
+                {item.label}
+              </a>
+              {idx < navItems.length - 1 && (
+                <span className="flex items-center mx-1" aria-hidden="true">
+                  <span
+                    className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-cyan transition-all duration-200"
+                    style={{
+                      opacity: 0.48,
+                      transition: "background-color 230ms cubic-bezier(.4,0,.2,1), opacity 180ms cubic-bezier(.4,0,.2,1)"
+                    }}
+                  ></span>
+                </span>
+              )}
+            </React.Fragment>
+          ))}
+        </nav>
+        <div className="w-px h-6 bg-brand-gray/30" aria-hidden="true"></div>
+        <LanguageToggle />
+        <AccessibilityToggle />
+      </div>
       <style>{`
         nav > a:focus + span > span,
         nav > a:hover + span > span {

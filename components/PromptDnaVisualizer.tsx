@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect, FormEvent, DragEvent, useRef } from 'react';
 import { GoogleGenAI, Type } from '@google/genai';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
-import { DnaIcon, ShuffleIcon, CopyIcon } from './icons/Icons';
+import CopyButton from './common/CopyButton';
+import { DnaIcon, ShuffleIcon } from './icons/Icons';
 import { getApiErrorMessage } from '../utils/errorUtils';
 import ErrorDisplay from './common/ErrorDisplay';
 
@@ -17,32 +17,6 @@ type DnaBlock = {
 const BlinkingCursor: React.FC = () => (
   <span className="inline-block w-2.5 h-7 bg-brand-cyan animate-flicker" />
 );
-
-const CopyButton: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopy = () => {
-    if (!textToCopy || isCopied) return;
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    }).catch(err => console.error('Failed to copy:', err));
-  };
-
-  const isDisabled = !textToCopy;
-
-  return (
-    <button
-      onClick={handleCopy}
-      disabled={isDisabled || isCopied}
-      className={`px-3 py-1 text-xs font-mono uppercase tracking-widest flex items-center gap-2 bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-gray hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-brand-gray/30 disabled:hover:text-brand-gray transition-all duration-200 ${isCopied ? '!border-brand-cyan !text-brand-cyan' : ''}`}
-      aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
-    >
-      <CopyIcon className="h-4 w-4" />
-      {isCopied ? 'Copied!' : 'Copy'}
-    </button>
-  );
-};
 
 const PromptDnaVisualizer: React.FC = () => {
   const [userInput, setUserInput] = useState('');
@@ -194,6 +168,13 @@ User Request: "${userInput}"`;
   const handleEditClick = (block: DnaBlock) => {
     setEditingBlock({ id: block.id, content: block.content });
   };
+  
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, block: DnaBlock) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleEditClick(block);
+    }
+  };
 
   const handleSaveEdit = () => {
     if (!editingBlock) return;
@@ -227,9 +208,12 @@ User Request: "${userInput}"`;
           Deconstruct your ideas into powerful, editable prompt components. Drag, drop, and mutate to engineer the perfect AI instruction.
         </p>
       </div>
+       <div className="sr-only" aria-live="assertive">
+        {isLoading && "Generating prompt DNA components..."}
+      </div>
       <div className="border-2 border-brand-dark-accent bg-brand-dark/50 p-6 sm:p-8">
         <form onSubmit={handleGenerateDna} className="space-y-4">
-          <label htmlFor="dna-user-input" className="sr-only">Describe your goal</label>
+          <label htmlFor="dna-user-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm mb-2 text-left">Describe your goal</label>
           <textarea
             id="dna-user-input"
             value={userInput}
@@ -253,12 +237,12 @@ User Request: "${userInput}"`;
         <ErrorDisplay message={error} />
 
         {/* DNA Strand */}
-        <div className="mt-8 min-h-[12rem] flex items-center justify-center relative z-10">
+        <div className="mt-8 min-h-[12rem] flex items-center justify-center relative z-10" aria-label="Prompt DNA components area">
           {isLoading ? <BlinkingCursor /> : promptDna.length > 0 && (
             <div className="flex items-center gap-2 flex-wrap justify-center animate-fade-in">
               {promptDna.map((block, index) => (
                 <React.Fragment key={block.id}>
-                  {index > 0 && <div className="h-px w-8 bg-brand-gray/30 hidden md:block"></div>}
+                  {index > 0 && <div className="h-px w-8 bg-brand-gray/30 hidden md:block" aria-hidden="true"></div>}
                   <div
                     draggable
                     onDragStart={(e) => handleDragStart(e, index)}
@@ -268,16 +252,19 @@ User Request: "${userInput}"`;
                     onDragLeave={handleDragLeave}
                     onDragEnd={handleDragEnd}
                     onClick={() => handleEditClick(block)}
+                    onKeyDown={(e) => handleKeyDown(e, block)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Draggable prompt component: ${block.name}. Content: ${block.content}. Click or press enter to edit.`}
                     className={`group relative p-4 border-2 ${blockColors[index % blockColors.length]} bg-brand-dark-accent rounded-lg cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_0_22px_theme(colors.brand.cyan)] z-10`}
                     style={{ zIndex: editingBlock?.id === block.id ? 30 : 10 }}
-                    title="Click to edit, drag to reorder"
                   >
                     <h4 className="font-mono text-sm uppercase text-brand-light tracking-widest">{`[${block.name}]`}</h4>
                     {editingBlock?.id !== block.id && (
                       <p className="text-brand-gray text-xs mt-2 truncate max-w-[120px]">{block.content}</p>
                     )}
                     {editingBlock?.id === block.id && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-30 w-72">
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-30 w-72" role="dialog" aria-label="Editing component content">
                         <div className="p-4 bg-brand-dark border-2 border-brand-cyan shadow-lg rounded-lg">
                           <textarea
                             ref={textareaRef}
@@ -286,6 +273,7 @@ User Request: "${userInput}"`;
                             onBlur={handleSaveEdit}
                             className="w-full bg-brand-dark-accent text-brand-light p-2 font-mono text-sm border-0 focus:ring-0 resize-none overflow-hidden"
                             style={{ zIndex: 40 }}
+                            aria-label={`Editing content for ${block.name}`}
                           />
                           <p className="text-xs text-brand-gray mt-2 text-right">Click away to save</p>
                         </div>
@@ -302,12 +290,17 @@ User Request: "${userInput}"`;
         {generatedPrompt && !isLoading && (
           <div className="mt-8 animate-fade-in">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
+              <h3 id="live-prompt-heading" className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
                 [ Live Prompt Blueprint ]
               </h3>
-              <CopyButton textToCopy={generatedPrompt} />
+              <CopyButton textToCopy={generatedPrompt} label="Live Prompt Blueprint to clipboard" />
             </div>
-            <div className="p-4 bg-brand-dark font-mono text-brand-light/90 text-sm border-2 border-brand-dark-accent text-left overflow-y-auto max-h-[400px]">
+            <div
+              className="relative overflow-hidden scanline-container p-4 bg-brand-dark font-mono text-brand-light/90 text-sm border-2 border-brand-dark-accent text-left overflow-y-auto max-h-[400px]"
+              aria-labelledby="live-prompt-heading"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               <SyntaxHighlighter
                 language="markdown"
                 style={vscDarkPlus}
