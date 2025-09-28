@@ -1,6 +1,62 @@
 import React from 'react';
 type SVGProps = React.SVGProps<SVGSVGElement>;
 
+// ——— New v3.0 Tool Icons ———
+
+export const PromptSandboxIcon: React.FC<SVGProps> = (props) => (
+  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M6 23h16" />
+    <path d="M8 23V7.27a1 1 0 0 1 .55-.89L14 3l5.45 3.38a1 1 0 0 1 .55.89V23" />
+    <path d="M14 9a3 3 0 0 0-3 3v0a3 3 0 0 0 3 3v0a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3v0z" />
+    <path d="M12.5 14.5.5-1.5" />
+    <circle cx="14" cy="12" r="3" />
+  </svg>
+);
+export const RAGPipelineIcon: React.FC<SVGProps> = (props) => (
+  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M3 8a2 2 0 0 1 2-2h2" />
+    <path d="M11 6h10a2 2 0 0 1 2 2v2" />
+    <path d="M21 14H7a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h14" />
+    <circle cx="9" cy="6" r="2" />
+    <circle cx="19" cy="18" r="2" />
+  </svg>
+);
+export const AutoSuggestIcon: React.FC<SVGProps> = (props) => (
+  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2a6 6 0 0 0-6 6c0 2.24.9 4.3 2.3 5.7l-2.3 2.3v2h8v-2l-2.3-2.3A5.9 5.9 0 0 0 18 8a6 6 0 0 0-6-6Z" />
+    <path d="M12 20v2" />
+    <path d="M12 24v2" />
+    <path d="M15 17h-6" />
+  </svg>
+);
+export const PromptLibraryIcon: React.FC<SVGProps> = (props) => (
+  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 4h18v2H5z" />
+    <path d="M5 13h18v2H5z" />
+    <path d="M5 22h18v2H5z" />
+    <rect x="7" y="7" width="14" height="3" rx="1" />
+    <rect x="7" y="16" width="14" height="3" rx="1" />
+  </svg>
+);
+export const RAGRefinerIcon: React.FC<SVGProps> = (props) => (
+  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 6h20" />
+    <path d="M7 12h14" />
+    <path d="M10 18h8" />
+    <path d="M14 24V18" />
+  </svg>
+);
+
+// --- Restored Tool Icons ---
+export const GoldPromptIcon: React.FC<SVGProps> = (props) => (
+  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M16 2H8a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="16 2 16 8 22 8"></polyline>
+    <path d="M14 13.5l-1.5 4.5L8 17l4.5 1.5L14 23l1.5-4.5L20 17l-4.5-1.5L14 13.5z" fill="#ff7a00" stroke="#ff7a00" />
+  </svg>
+);
+
+
 // ——— Brand/Cyber Icons ———
 export const ArbitraIcon: React.FC<SVGProps> = (props) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -113,17 +169,6 @@ export const GeneratorIcon: React.FC<SVGProps> = (props) => (
     <line x1="14" y1="9" x2="14" y2="19" stroke="#ff7a00" />
     <line x1="9" y1="14" x2="19" y2="14" stroke="#fff" />
     <circle cx="14" cy="14" r="4.5" stroke="#00f6ff" />
-  </svg>
-);
-
-export const GraffitiIcon: React.FC<SVGProps> = (props) => (
-  <svg viewBox="0 0 28 28" width="24" height="24" fill="none" {...props}>
-    <ellipse cx="14" cy="16" rx="9" ry="7" fill="#00f6ff33"/>
-    <ellipse cx="14" cy="13" rx="11" ry="8" stroke="#00f6ff" strokeDasharray="2 3" />
-    <path d="M9 19l6-10" stroke="#ff7a00" strokeWidth="2" />
-    <ellipse cx="14" cy="14" rx="3" ry="2" fill="#fff7" />
-    <ellipse cx="17.8" cy="18.8" rx="1.7" ry="0.7" fill="#ff7a00aa" />
-    <ellipse cx="17.2" cy="10" rx="1" ry="0.6" fill="#00fff788" />
   </svg>
 );
 

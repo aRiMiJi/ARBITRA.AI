@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { GoogleGenAI, Type } from '@google/genai';
+import { Type } from '@google/genai';
+import { useGenAI } from '../contexts/GenAIContext';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
@@ -21,13 +22,7 @@ const IncidentMode: React.FC = () => {
   const [mitigationPrompt, setMitigationPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [ai, setAi] = useState<GoogleGenAI | null>(null);
-
-  useEffect(() => {
-    if (process.env.API_KEY) {
-      setAi(new GoogleGenAI({ apiKey: process.env.API_KEY }));
-    }
-  }, []);
+  const { ai } = useGenAI();
 
   const handleSimulate = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,6 +41,7 @@ User's failure scenario: "${scenario}"`;
 
     try {
       const response = await ai.models.generateContent({
+        // FIX: Use 'gemini-2.5-flash' for general text tasks as per guidelines.
         model: 'gemini-2.5-flash',
         contents: systemInstruction,
         config: {

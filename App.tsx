@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import Hero from './components/Hero';
 import Features from './components/Features';
 import ProblemSolution from './components/ProblemSolution';
 import HowItWorks from './components/HowItWorks';
+import About from './components/About';
 import Pricing from './components/Pricing';
 import Testimonials from './components/Testimonials';
+import TrustedBy from './components/TrustedBy';
 import FAQ from './components/FAQ';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
@@ -15,6 +18,7 @@ import ToolsBar from './components/ToolsBar';
 import NewsletterSignup from './components/NewsletterSignup';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
+import { GenAIProvider } from './contexts/GenAIContext';
 
 const AppContent: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -39,11 +43,8 @@ const AppContent: React.FC = () => {
         id="main"
         className="container mx-auto px-4 sm:px-6 lg:px-8 scroll-smooth"
       >
-        {/* Optional: Place for global theme toggle, if adding later */}
-        {/* <ThemeToggle /> */}
-
+        <Hero />
         <Features />
-        {/* Brutalist animated divider under hero */}
         <AnimatedDivider />
         <ProblemSolution />
         <HowItWorks />
@@ -51,6 +52,10 @@ const AppContent: React.FC = () => {
         <Pricing />
         <AnimatedDivider />
         <Testimonials />
+        <AnimatedDivider />
+        <About />
+        <AnimatedDivider />
+        <TrustedBy />
         <AnimatedDivider />
         <FAQ />
         <AnimatedDivider />
@@ -70,7 +75,9 @@ const App: React.FC = () => {
   return (
     <LanguageProvider>
       <AccessibilityProvider>
-        <AppContent />
+        <GenAIProvider>
+          <AppContent />
+        </GenAIProvider>
       </AccessibilityProvider>
     </LanguageProvider>
   );

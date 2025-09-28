@@ -115,8 +115,8 @@ const EvolutionTree: React.FC = () => {
             if (containerRef.current) {
               const containerRect = containerRef.current.getBoundingClientRect();
               setHoverPos({
-                top: rect.bottom - containerRect.top + 10, // 10px below node
-                left: rect.left - containerRect.left + rect.width / 2
+                top: rect.bottom - containerRect.top + 15, // 10px below node
+                left: rect.left - containerRect.left + rect.width / 50
               });
             }
           }}

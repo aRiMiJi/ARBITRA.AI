@@ -61,6 +61,7 @@ export const ArbitraLogo: React.FC<{ className?: string }> = ({ className }) => 
 
 const navItems = [
   { label: 'Home', href: '#home' },
+  { label: 'About', href: '#about' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Toolkit', href: '#tools' },
@@ -69,7 +70,7 @@ const navItems = [
 
 const Header: React.FC = () => {
   return (
-    <header id="home" className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent">
+    <header id="home" className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent sticky top-0 z-50">
       <div>
         <ArbitraLogo />
       </div>

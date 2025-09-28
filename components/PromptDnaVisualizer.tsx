@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FormEvent, DragEvent, useRef } from 'react';
-import { GoogleGenAI, Type } from '@google/genai';
+import { Type } from '@google/genai';
+import { useGenAI } from '../contexts/GenAIContext';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
@@ -23,7 +24,7 @@ const PromptDnaVisualizer: React.FC = () => {
   const [promptDna, setPromptDna] = useState<DnaBlock[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [ai, setAi] = useState<GoogleGenAI | null>(null);
+  const { ai } = useGenAI();
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [editingBlock, setEditingBlock] = useState<{ id: string, content: string } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -52,12 +53,6 @@ const PromptDnaVisualizer: React.FC = () => {
     const currentRef = sectionRef.current;
     if (currentRef) observer.observe(currentRef);
     return () => { if(currentRef) observer.unobserve(currentRef) };
-  }, []);
-
-  useEffect(() => {
-    if (process.env.API_KEY) {
-      setAi(new GoogleGenAI({ apiKey: process.env.API_KEY }));
-    }
   }, []);
 
   useEffect(() => {
@@ -94,6 +89,7 @@ User Request: "${userInput}"`;
 
     try {
       const response = await ai.models.generateContent({
+        // FIX: Use 'gemini-2.5-flash' for general text tasks as per guidelines.
         model: 'gemini-2.5-flash',
         contents: systemInstruction,
         config: {

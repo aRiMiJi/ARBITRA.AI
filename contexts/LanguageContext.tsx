@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 
-type Language = 'en' | 'jp' | 'de';
+type Language = 'en' | 'jp' | 'de' | 'fa';
 type LanguageContextType = {
   language: Language;
   setLanguage: (language: Language) => void;

@@ -1,177 +1,162 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
+  GoldPromptIcon,
   DnaIcon,
-  GeneratorIcon,
-  GraffitiIcon,
+  AnalyticsIcon,
+  PromptSandboxIcon,
+  RAGPipelineIcon,
+  AutoSuggestIcon,
+  PromptLibraryIcon,
+  RAGRefinerIcon,
   TreeIcon,
   AlertIcon,
-  ExpandIcon,
-  CloseIcon,
-  AnalyticsIcon,
 } from './icons/Icons';
-import PromptDnaVisualizer from './PromptDnaVisualizer';
-import PromptGenerator from './Hero';
-import GraffitiWall from './GraffitiWall';
-import EvolutionTree from './EvolutionTree';
-import IncidentMode from './IncidentMode';
-import AnalyticsDashboard from './AnalyticsDashboard';
 import MatrixCard from './common/MatrixCard';
+import { CloseIcon } from './icons/Icons';
 
-const tools: {
-  id: string;
-  name: string;
-  Icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  description: string;
-  component: React.FC;
-  version: string;
-}[] = [
-  {
-    id: 'dna-visualizer',
-    name: 'Prompt DNA',
-    Icon: DnaIcon,
-    description: 'Visualize and mutate your prompt’s gene structure.',
-    component: PromptDnaVisualizer,
-    version: 'v2.1'
-  },
-  {
-    id: 'prompt-generator',
-    name: 'Gold Prompt',
-    Icon: GeneratorIcon,
-    description: 'Turn casual ideas into production-grade prompts.',
-    component: PromptGenerator,
-    version: 'v1.8'
-  },
-  {
-    id: 'graffiti-wall',
-    name: 'Graffiti Wall',
-    Icon: GraffitiIcon,
-    description: 'Remix and vote on user-submitted prompt graffiti.',
-    component: GraffitiWall,
-    version: 'v1.3'
-  },
-  {
-    id: 'evolution-tree',
-    name: 'Evolution Tree',
-    Icon: TreeIcon,
-    description: 'Trace and evolve prompt generations in a live tree.',
-    component: EvolutionTree,
-    version: 'v1.5'
-  },
-  {
-    id: 'analytics-dashboard',
-    name: 'Analytics',
-    Icon: AnalyticsIcon,
-    description: 'Visualize AI usage, success rates, and API consumption.',
-    component: AnalyticsDashboard,
-    version: 'v1.0'
-  },
-  {
-    id: 'incident-mode',
-    name: 'Incident Mode',
-    Icon: AlertIcon,
-    description: 'Simulate AI breakdowns and crisis prompt scenarios.',
-    component: IncidentMode,
-    version: 'v2.4'
-  },
+// Direct imports to fix the lazy loading issue
+import GoldPromptGenerator from './GoldPromptGenerator';
+import PromptDnaVisualizer from './PromptDnaVisualizer';
+import AnalyticsDashboard from './AnalyticsDashboard';
+import IncidentMode from './IncidentMode';
+import EvolutionTree from './EvolutionTree';
+import PromptSandbox from './PromptSandbox';
+import RAGPipelineDesigner from './RAGPipelineDesigner';
+import ContextualAutoSuggest from './ContextualAutoSuggest';
+import PromptLibrary from './PromptLibrary';
+import RAGContextRefiner from './RAGContextRefiner';
+
+const tools = [
+  { id: 'gold-prompt', name: 'Gold Prompt Generator', description: 'Turn simple ideas into high-performance, structured prompts.', icon: GoldPromptIcon, component: <GoldPromptGenerator /> },
+  { id: 'dna-visualizer', name: 'Prompt DNA Visualizer', description: 'Deconstruct prompts into editable, re-orderable components.', icon: DnaIcon, component: <PromptDnaVisualizer /> },
+  { id: 'sandbox', name: 'Prompt Sandbox', description: 'Version, test, and compare prompts against multiple LLMs.', icon: PromptSandboxIcon, component: <PromptSandbox /> },
+  { id: 'rag-designer', name: 'RAG Pipeline Designer', description: 'Visually configure and generate code for RAG pipelines.', icon: RAGPipelineIcon, component: <RAGPipelineDesigner /> },
+  { id: 'rag-refiner', name: 'RAG Context Refiner', description: 'Interactively review and refine context before generation.', icon: RAGRefinerIcon, component: <RAGContextRefiner /> },
+  { id: 'auto-suggest', name: 'Contextual Auto-Suggest', description: 'Get real-time suggestions to improve your prompts as you type.', icon: AutoSuggestIcon, component: <ContextualAutoSuggest /> },
+  { id: 'library', name: 'Prompt Library', description: 'Access a federated library of curated, performance-tracked prompts.', icon: PromptLibraryIcon, component: <PromptLibrary /> },
+  { id: 'evolution-tree', name: 'Evolution Tree', description: 'Visualize how prompts are remixed and improved by your team.', icon: TreeIcon, component: <EvolutionTree /> },
+  { id: 'incident-mode', name: 'Incident Simulation', description: 'Red-team your prompts to generate and mitigate failure modes.', icon: AlertIcon, component: <IncidentMode /> },
+  { id: 'analytics', name: 'Analytics Dashboard', description: 'Monitor prompt performance, costs, and usage across your org.', icon: AnalyticsIcon, component: <AnalyticsDashboard /> },
 ];
 
+const ExpandedToolView = ({ tool, onClose }: { tool: any, onClose: () => void }) => {
+  return (
+    <div
+      className="fixed inset-0 z-[60] bg-brand-dark/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fade-in"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tool-modal-title"
+    >
+      <div
+        className="relative w-full h-full bg-brand-dark border-2 border-brand-dark-accent shadow-[0_0_48px_#00fff744] flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          '--draw-duration': '0.5s',
+          animation: 'drawBorder var(--draw-duration) ease-out forwards',
+        } as React.CSSProperties}
+      >
+        <header className="sticky top-0 bg-brand-dark/80 backdrop-blur-sm z-10 flex items-center justify-between p-4 border-b-2 border-brand-dark-accent flex-shrink-0">
+          <div className="flex items-center gap-4">
+            <tool.icon className="h-8 w-8 text-brand-cyan" />
+            <h2 id="tool-modal-title" className="text-2xl font-bold font-sans text-brand-light uppercase tracking-wide">{tool.name}</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-brand-gray hover:text-brand-cyan transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-cyan"
+            aria-label="Close tool"
+          >
+            <CloseIcon className="h-6 w-6" />
+          </button>
+        </header>
+        <main className="flex-grow overflow-y-auto p-4 sm:p-8">
+          {tool.component}
+        </main>
+      </div>
+       <style>{`
+        @keyframes drawBorder {
+          0% { clip-path: inset(100% 100% 100% 100%); }
+          25% { clip-path: inset(0 100% 100% 0); }
+          50% { clip-path: inset(0 0 100% 0); }
+          75% { clip-path: inset(0 0 0 100%); }
+          100% { clip-path: inset(0 0 0 0); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const ToolsBar: React.FC = () => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [expandedTool, setExpandedTool] = useState<(typeof tools[0]) | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    const currentRef = sectionRef.current;
+    if (currentRef) observer.observe(currentRef);
+    return () => { if (currentRef) observer.unobserve(currentRef) };
+  }, []);
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setExpandedIndex(null);
+        setExpandedTool(null);
       }
     };
-    if (expandedIndex !== null) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleEsc);
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [expandedIndex]);
-
-
-  const handleExpand = useCallback((index: number) => {
-    setExpandedIndex(index);
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
   }, []);
-
-  const handleClose = useCallback(() => {
-    setExpandedIndex(null);
-  }, []);
-
-  const ExpandedToolComponent = expandedIndex !== null ? tools[expandedIndex].component : null;
 
   return (
     <>
-      <section id="tools" className="py-20 sm:py-24 w-full" aria-labelledby="tools-heading">
-        <div className="text-center mb-16">
-          <div className="glitch-text-container" data-text="AI Toolkit">
+      <section
+        id="tools"
+        ref={sectionRef}
+        className={`py-20 sm:py-24 opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+        aria-labelledby="tools-heading"
+      >
+        <div className="text-center mb-16 relative">
+             <div className="absolute inset-0 z-0 opacity-10" style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, #8883, #8883 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #8883, #8883 1px, transparent 1px, transparent 20px)'
+             }}/>
+          <div className="relative z-10 glitch-text-container" data-text="AI Toolkit v3.0">
             <h2 id="tools-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">
-              AI Toolkit
+              AI Toolkit v3.0
             </h2>
           </div>
-          <p className="mt-2 text-lg text-brand-gray max-w-3xl mx-auto">
-            A suite of industrial-grade utilities for professional prompt engineering and management.
+          <p className="relative z-10 mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
+            A comprehensive suite of powerful tools to secure, manage, and optimize your entire prompt engineering lifecycle.
           </p>
         </div>
         
-        {/* Cyberdeck Grid using MatrixCard */}
-        <div
-          className={`perspective max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-500 ease-[cubic-bezier(.65,-0.36,.38,1.43)]
-            ${expandedIndex !== null ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}
-        >
-          {tools.map((tool, idx) => (
-            <MatrixCard
-              key={tool.id}
-              Icon={tool.Icon}
-              title={tool.name}
-              description={tool.description}
-              version={tool.version}
-              onLaunch={() => handleExpand(idx)}
-            />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {tools.map((tool, index) => (
+                <div 
+                    key={tool.id} 
+                    className={`opacity-0 ${isVisible ? 'animate-fade-in-up' : ''}`}
+                    style={{ animationDelay: `${100 + index * 75}ms` }}
+                >
+                    <MatrixCard
+                        icon={tool.icon}
+                        name={tool.name}
+                        description={tool.description}
+                        onLaunch={() => setExpandedTool(tool)}
+                    />
+                </div>
+            ))}
         </div>
       </section>
-
-      {/* Expanded Tool View */}
-      <div
-        className={`fixed inset-0 z-[120] bg-brand-dark/90
-          ${expandedIndex !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-          transition-opacity duration-500`}
-        aria-modal="true"
-        role="dialog"
-      >
-        <div
-          className={`absolute inset-2 sm:inset-4 md:inset-8 border-4 bg-brand-dark
-            transition-all duration-400 ease-[cubic-bezier(.65,-0.36,.38,1.43)]
-            ${expandedIndex !== null ? 'opacity-100 scale-100 border-brand-orange shadow-[0_0_64px_12px_#ffae51]' : 'opacity-0 scale-95 border-transparent shadow-none'}
-            overflow-y-auto flex flex-col`}
-        >
-          {expandedIndex !== null && (
-            <>
-              <header className="flex items-center justify-between p-4 border-b-2 border-brand-dark-accent bg-brand-dark/80 backdrop-blur-sm sticky top-0 z-10">
-                <h3 className="font-mono text-base uppercase tracking-wider text-brand-orange">{tools[expandedIndex].name}</h3>
-                <button
-                  onClick={handleClose}
-                  className="p-2 text-brand-gray hover:text-brand-orange border-2 hover:border-brand-orange focus:outline-none"
-                  aria-label="Close tool"
-                >
-                  <CloseIcon className="h-6 w-6" />
-                </button>
-              </header>
-              <div className="p-4 sm:p-6 lg:p-8 flex-1">
-                {ExpandedToolComponent && <ExpandedToolComponent />}
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+      
+      {expandedTool && <ExpandedToolView tool={expandedTool} onClose={() => setExpandedTool(null)} />}
     </>
   );
 };

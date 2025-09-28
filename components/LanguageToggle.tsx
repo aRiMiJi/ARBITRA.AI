@@ -6,6 +6,7 @@ const languages = [
   { code: 'en', name: 'English' },
   { code: 'jp', name: '日本語' },
   { code: 'de', name: 'Deutsch' },
+  { code: 'fa', name: 'فارسی' },
 ];
 
 const LanguageToggle: React.FC = () => {
@@ -23,7 +24,7 @@ const LanguageToggle: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLanguageChange = (langCode: 'en' | 'jp' | 'de') => {
+  const handleLanguageChange = (langCode: 'en' | 'jp' | 'de' | 'fa') => {
     setLanguage(langCode);
     setIsOpen(false);
   };
@@ -50,7 +51,7 @@ const LanguageToggle: React.FC = () => {
           {languages.map((lang) => (
             <button
               key={lang.code}
-              onClick={() => handleLanguageChange(lang.code as 'en' | 'jp' | 'de')}
+              onClick={() => handleLanguageChange(lang.code as 'en' | 'jp' | 'de' | 'fa')}
               className="w-full text-left px-4 py-2 text-sm font-mono text-brand-light hover:bg-brand-cyan hover:text-brand-dark transition-colors duration-200"
               role="menuitem"
             >
