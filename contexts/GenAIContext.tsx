@@ -11,15 +11,13 @@ export const GenAIProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [ai, setAi] = useState<GoogleGenAI | null>(null);
 
   useEffect(() => {
-    if (process.env.API_KEY) {
-      try {
-        const genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        setAi(genAI);
-      } catch (e) {
-        console.error("Failed to initialize GoogleGenAI", e);
-      }
-    } else {
-      console.warn("API_KEY environment variable not found.");
+    try {
+      // The API key must be provided from the environment variable `process.env.API_KEY`.
+      // This is the standard and guideline-compliant method for initializing the client.
+      const genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      setAi(genAI);
+    } catch (e) {
+      console.error("Failed to initialize GoogleGenAI", e);
     }
   }, []);
 

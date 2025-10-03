@@ -37,7 +37,7 @@ const ContactForm: React.FC = () => {
     e.preventDefault();
     setSubmitStatus('submitting');
     // Simulate API call
-    setTimeout(() => {
+    window.setTimeout(() => {
       setSubmitStatus('submitted');
     }, 1500);
   };

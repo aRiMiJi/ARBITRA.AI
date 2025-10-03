@@ -4,6 +4,7 @@ import { Type } from '@google/genai';
 import Button from './common/Button';
 import ErrorDisplay from './common/ErrorDisplay';
 import { getApiErrorMessage } from '../utils/errorUtils';
+import CopyButton from './common/CopyButton';
 
 // A simple debounce hook
 const useDebounce = (value: string, delay: number) => {
@@ -93,7 +94,10 @@ DRAFT: "${debouncedPrompt}"`;
             {/* Context & Prompt Input */}
             <div className="flex flex-col gap-6">
                 <div>
-                    <label htmlFor="context-input" className="block text-xs font-mono uppercase tracking-wider text-brand-gray mb-2">Context (Optional)</label>
+                    <div className="flex justify-between items-center mb-2">
+                        <label htmlFor="context-input" className="block text-xs font-mono uppercase tracking-wider text-brand-gray">Context (Optional)</label>
+                        <CopyButton textToCopy={context} label="Copy context to clipboard" />
+                    </div>
                     <textarea
                         id="context-input"
                         value={context}
@@ -103,7 +107,10 @@ DRAFT: "${debouncedPrompt}"`;
                     />
                 </div>
                 <div>
-                    <label htmlFor="prompt-input" className="block text-xs font-mono uppercase tracking-wider text-brand-gray mb-2">Your Prompt</label>
+                    <div className="flex justify-between items-center mb-2">
+                        <label htmlFor="prompt-input" className="block text-xs font-mono uppercase tracking-wider text-brand-gray">Your Prompt</label>
+                        <CopyButton textToCopy={prompt} label="Copy your prompt to clipboard" />
+                    </div>
                     <textarea
                         id="prompt-input"
                         value={prompt}

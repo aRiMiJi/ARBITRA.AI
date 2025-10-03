@@ -3,10 +3,10 @@ import { ArbitraIcon, XIcon, LinkedInIcon, GithubIcon, TelegramIcon } from './ic
 
 const Footer: React.FC = () => {
   const socialLinks = [
-    { name: 'X', icon: XIcon, href: '#' },
-    { name: 'LinkedIn', icon: LinkedInIcon, href: '#' },
-    { name: 'GitHub', icon: GithubIcon, href: '#' },
-    { name: 'Telegram', icon: TelegramIcon, href: '#' },
+    { name: 'X', icon: XIcon, href: 'https://x.com/arbitra_ai' },
+    { name: 'LinkedIn', icon: LinkedInIcon, href: 'https://linkedin.com/company/arbitra-ai' },
+    { name: 'GitHub', icon: GithubIcon, href: 'https://github.com/arbitra-ai' },
+    { name: 'Telegram', icon: TelegramIcon, href: 'https://t.me/arbitra_ai' },
   ];
 
   const footerNav = [

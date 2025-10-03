@@ -36,7 +36,6 @@ const tools = [
   { id: 'library', name: 'Prompt Library', description: 'Access a federated library of curated, performance-tracked prompts.', icon: PromptLibraryIcon, component: <PromptLibrary /> },
   { id: 'evolution-tree', name: 'Evolution Tree', description: 'Visualize how prompts are remixed and improved by your team.', icon: TreeIcon, component: <EvolutionTree /> },
   { id: 'incident-mode', name: 'Incident Simulation', description: 'Red-team your prompts to generate and mitigate failure modes.', icon: AlertIcon, component: <IncidentMode /> },
-  { id: 'analytics', name: 'Analytics Dashboard', description: 'Monitor prompt performance, costs, and usage across your org.', icon: AnalyticsIcon, component: <AnalyticsDashboard /> },
 ];
 
 const ExpandedToolView = ({ tool, onClose }: { tool: any, onClose: () => void }) => {

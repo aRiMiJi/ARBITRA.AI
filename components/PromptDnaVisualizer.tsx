@@ -89,7 +89,6 @@ User Request: "${userInput}"`;
 
     try {
       const response = await ai.models.generateContent({
-        // FIX: Use 'gemini-2.5-flash' for general text tasks as per guidelines.
         model: 'gemini-2.5-flash',
         contents: systemInstruction,
         config: {
@@ -209,7 +208,10 @@ User Request: "${userInput}"`;
       </div>
       <div className="border-2 border-brand-dark-accent bg-brand-dark/50 p-6 sm:p-8">
         <form onSubmit={handleGenerateDna} className="space-y-4">
-          <label htmlFor="dna-user-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm mb-2 text-left">Describe your goal</label>
+          <div className="flex justify-between items-center mb-2">
+              <label htmlFor="dna-user-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm">Describe your goal</label>
+              <CopyButton textToCopy={userInput} label="Copy your goal description" />
+          </div>
           <textarea
             id="dna-user-input"
             value={userInput}
@@ -289,7 +291,7 @@ User Request: "${userInput}"`;
               <h3 id="live-prompt-heading" className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
                 [ Live Prompt Blueprint ]
               </h3>
-              <CopyButton textToCopy={generatedPrompt} label="Live Prompt Blueprint to clipboard" />
+              <CopyButton textToCopy={generatedPrompt} label="Copy Live Prompt Blueprint to clipboard" />
             </div>
             <div
               className="relative overflow-hidden scanline-container p-4 bg-brand-dark font-mono text-brand-light/90 text-sm border-2 border-brand-dark-accent text-left overflow-y-auto max-h-[400px]"

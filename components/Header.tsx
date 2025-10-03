@@ -65,15 +65,16 @@ const navItems = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Toolkit', href: '#tools' },
+  { label: 'Analytics', href: '#analytics' },
   { label: 'Contact', href: '#contact' }
 ];
 
 const Header: React.FC = () => {
   return (
     <header id="home" className="w-full px-4 py-2 flex items-center justify-between bg-brand-dark border-b-2 border-brand-dark-accent sticky top-0 z-50">
-      <div>
+      <a href="#home" aria-label="Back to homepage">
         <ArbitraLogo />
-      </div>
+      </a>
       <div className="flex items-center gap-4">
         <nav className="flex items-center gap-1">
           {navItems.map((item, idx) => (

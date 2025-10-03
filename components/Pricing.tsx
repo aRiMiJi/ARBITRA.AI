@@ -57,10 +57,6 @@ const Pricing: React.FC = () => {
     };
   }, []);
 
-  const handleButtonClick = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
       id="pricing"
@@ -113,9 +109,11 @@ const Pricing: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-10">
-                <Button onClick={handleButtonClick} variant={plan.isHighlighted ? 'primary' : 'secondary'} className="w-full">
-                  {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
-                </Button>
+                <a href="#contact" className="block w-full">
+                  <Button variant={plan.isHighlighted ? 'primary' : 'secondary'} className="w-full">
+                    {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
+                  </Button>
+                </a>
               </div>
             </Card>
           </div>

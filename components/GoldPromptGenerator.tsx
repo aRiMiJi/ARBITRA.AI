@@ -112,7 +112,10 @@ The user's simple request is: "${userInput}"`;
         </p>
 
         <form onSubmit={handleGeneratePrompt} className="space-y-4">
-            <label htmlFor="user-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm mb-2 text-left">What do you want the AI to do?</label>
+            <div className="flex justify-between items-center">
+                <label htmlFor="user-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm">What do you want the AI to do?</label>
+                <CopyButton textToCopy={userInput} label="Copy your simple prompt idea" />
+            </div>
             <textarea
               id="user-input"
               value={userInput}
@@ -142,7 +145,7 @@ The user's simple request is: "${userInput}"`;
                 [ Optimized Prompt ]
               </h3>
               <div className="flex items-center gap-2">
-                <CopyButton textToCopy={optimizedPrompt} label="Optimized Prompt to clipboard"/>
+                <CopyButton textToCopy={optimizedPrompt} label="Copy Optimized Prompt to clipboard"/>
                 <Button
                   onClick={handleTestOutput}
                   variant="secondary"
@@ -181,7 +184,7 @@ The user's simple request is: "${userInput}"`;
                 <h3 id="test-output-heading" className="text-sm font-mono uppercase text-brand-gray tracking-widest text-left">
                   [ Test Output ]
                 </h3>
-                <CopyButton textToCopy={testOutput} label="Test Output to clipboard" />
+                <CopyButton textToCopy={testOutput} label="Copy Test Output to clipboard" />
               </div>
               <div
                 aria-labelledby="test-output-heading"

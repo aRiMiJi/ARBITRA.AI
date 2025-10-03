@@ -20,7 +20,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     if (isOpen) {
       triggerRef.current = document.activeElement;
       window.addEventListener('keydown', handleEsc);
-      setTimeout(() => {
+      window.setTimeout(() => {
         modalRef.current?.focus();
       }, 100); // Delay focus to allow for transitions
     }

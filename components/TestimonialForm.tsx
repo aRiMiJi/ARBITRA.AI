@@ -21,12 +21,12 @@ const TestimonialForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    window.setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setTimeout(() => {
+      window.setTimeout(() => {
         onClose();
-        setTimeout(() => {
+        window.setTimeout(() => {
           setIsSubmitted(false);
           setAvatarPreview(null);
         }, 500);

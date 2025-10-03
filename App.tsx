@@ -19,12 +19,14 @@ import NewsletterSignup from './components/NewsletterSignup';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import { GenAIProvider } from './contexts/GenAIContext';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
+import ChatbotWidget from './components/ChatbotWidget';
 
 const AppContent: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1800); // Fast but visible load
+    const timer = window.setTimeout(() => setLoading(false), 1800); // Fast but visible load
     return () => clearTimeout(timer);
   }, []);
 
@@ -37,37 +39,44 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-brand-dark text-brand-light font-sans antialiased transition-colors duration-300 ease-in relative">
-      <Header />
-      <main
-        id="main"
-        className="container mx-auto px-4 sm:px-6 lg:px-8 scroll-smooth"
-      >
-        <Hero />
-        <Features />
-        <AnimatedDivider />
-        <ProblemSolution />
-        <HowItWorks />
-        <AnimatedDivider />
-        <Pricing />
-        <AnimatedDivider />
-        <Testimonials />
-        <AnimatedDivider />
-        <About />
-        <AnimatedDivider />
-        <TrustedBy />
-        <AnimatedDivider />
-        <FAQ />
-        <AnimatedDivider />
-        <ToolsBar />
-        <AnimatedDivider />
-        <ContactForm />
-        <AnimatedDivider />
-        <NewsletterSignup />
-      </main>
-      <Footer />
+    <>
+      <div className="min-h-screen text-brand-light font-sans antialiased transition-colors duration-300 ease-in relative">
+        <Header />
+        <main
+          id="main"
+          className="container mx-auto px-4 sm:px-6 lg:px-8"
+        >
+          <Hero />
+          <Features />
+          <AnimatedDivider />
+          <ProblemSolution />
+          <HowItWorks />
+          <AnimatedDivider />
+          <Pricing />
+          <AnimatedDivider />
+          <Testimonials />
+          <AnimatedDivider />
+          <About />
+          <AnimatedDivider />
+          <TrustedBy />
+          <AnimatedDivider />
+          <FAQ />
+          <AnimatedDivider />
+          <ToolsBar />
+          <AnimatedDivider />
+          <section id="analytics" className="py-20 sm:py-24">
+            <AnalyticsDashboard />
+          </section>
+          <AnimatedDivider />
+          <ContactForm />
+          <AnimatedDivider />
+          <NewsletterSignup />
+        </main>
+        <Footer />
+      </div>
       <ScrollToTopButton />
-    </div>
+      <ChatbotWidget />
+    </>
   );
 };
 

@@ -94,7 +94,7 @@ const MatrixCard: React.FC<MatrixCardProps> = ({ icon: Icon, name, description, 
     const colors = ['#00f6ff', '#ff7a00', '#EAEAEA'];
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(16, 16, 16, 0.08)'; // Slower fade for more visible trails
+      ctx.fillStyle = 'rgba(16, 16, 16, 0.1)'; // Slower fade for more visible trails
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = `bold ${fontSize}px "IBM Plex Mono", monospace`;
 
@@ -151,7 +151,7 @@ const MatrixCard: React.FC<MatrixCardProps> = ({ icon: Icon, name, description, 
       <div className="absolute inset-0 z-30 p-6 flex flex-col items-center justify-center text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto">
         <div 
           className="text-brand-cyan mb-6 text-sm font-mono h-[7.5rem] text-left w-full transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0 delay-100" 
-          style={{ textShadow: '0 0 10px #00f6ff' }} // Brighter glow
+          style={{ textShadow: '0 0 6px #00f6ff, 0 0 10px #00f6ff' }} // Brighter, more saturated glow
           aria-live="polite"
           aria-label={description}
         >

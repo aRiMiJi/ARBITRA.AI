@@ -2,6 +2,7 @@ import React, { useState, useMemo, useLayoutEffect, useCallback } from 'react';
 import Button from './common/Button';
 import { BranchIcon, StarIcon } from './icons/Icons';
 import Modal from './common/Modal';
+import CopyButton from './common/CopyButton';
 
 const initialNodes = [
   { id: 'root-1', parentId: null, title: 'Original Sci-Fi Concept', prompt: 'Generate a concept for a new sci-fi movie blending cyberpunk and ancient mythology.', author: 'Admin', stats: { upvotes: 15, remixes: 2, successRate: 88 } },
@@ -207,9 +208,12 @@ const EvolutionTree: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="remix-prompt" className="block text-xs font-medium text-brand-gray mb-2 uppercase tracking-wider">
-              Evolved Prompt
-            </label>
+            <div className="flex justify-between items-center mb-2">
+                <label htmlFor="remix-prompt" className="block text-xs font-medium text-brand-gray uppercase tracking-wider">
+                    Evolved Prompt
+                </label>
+                <CopyButton textToCopy={newPromptBody} label="Copy prompt to clipboard" />
+            </div>
             <textarea
               id="remix-prompt"
               value={newPromptBody}

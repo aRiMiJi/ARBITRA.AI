@@ -41,7 +41,6 @@ User's failure scenario: "${scenario}"`;
 
     try {
       const response = await ai.models.generateContent({
-        // FIX: Use 'gemini-2.5-flash' for general text tasks as per guidelines.
         model: 'gemini-2.5-flash',
         contents: systemInstruction,
         config: {
@@ -85,7 +84,10 @@ User's failure scenario: "${scenario}"`;
       </div>
 
       <form onSubmit={handleSimulate} className="flex-shrink-0">
-        <label htmlFor="scenario-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm mb-2 text-left">Describe Failure Scenario</label>
+        <div className="flex justify-between items-center mb-2">
+            <label htmlFor="scenario-input" className="block text-brand-gray font-mono uppercase tracking-widest text-sm">Describe Failure Scenario</label>
+            <CopyButton textToCopy={scenario} label="Copy failure scenario" />
+        </div>
         <textarea
           id="scenario-input"
           value={scenario}
@@ -114,7 +116,7 @@ User's failure scenario: "${scenario}"`;
             <h3 id="crisis-prompt-heading" className="font-mono uppercase text-brand-orange tracking-widest">
               [ Crisis Prompt // For Red Teaming ]
             </h3>
-            <CopyButton textToCopy={crisisPrompt} label="Crisis Prompt to clipboard" />
+            <CopyButton textToCopy={crisisPrompt} label="Copy Crisis Prompt to clipboard" />
           </div>
           <div
             className="flex-grow overflow-y-auto min-h-[150px]"
@@ -151,7 +153,7 @@ User's failure scenario: "${scenario}"`;
             <h3 id="mitigation-prompt-heading" className="font-mono uppercase text-brand-cyan tracking-widest">
               [ Mitigation Prompt // For Defense ]
             </h3>
-            <CopyButton textToCopy={mitigationPrompt} label="Mitigation Prompt to clipboard" />
+            <CopyButton textToCopy={mitigationPrompt} label="Copy Mitigation Prompt to clipboard" />
           </div>
           <div
             className="flex-grow overflow-y-auto min-h-[150px]"

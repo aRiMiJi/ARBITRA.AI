@@ -39,7 +39,7 @@ const NewsletterSignup: React.FC = () => {
     if (!email) return;
     setSubmitStatus('submitting');
     // Simulate API call
-    setTimeout(() => {
+    window.setTimeout(() => {
       setSubmitStatus('submitted');
     }, 1500);
   };

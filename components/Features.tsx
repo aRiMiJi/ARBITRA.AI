@@ -49,7 +49,7 @@ const Features: React.FC = () => {
 
   const handleCardClick = (index: number) => {
     setActiveCard(index);
-    setTimeout(() => setActiveCard(null), 220); // Slightly longer for visible effect
+    window.setTimeout(() => setActiveCard(null), 220); // Slightly longer for visible effect
   };
 
   return (

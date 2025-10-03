@@ -6,6 +6,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Button from './common/Button';
 import ErrorDisplay from './common/ErrorDisplay';
 import { getApiErrorMessage } from '../utils/errorUtils';
+import CopyButton from './common/CopyButton';
 
 type Chunk = {
     id: number;
@@ -116,11 +117,17 @@ const RAGContextRefiner: React.FC = () => {
             {step === 1 && (
                 <div className="space-y-4 animate-fade-in">
                     <div>
-                        <label htmlFor="rag-query" className="block text-xs font-mono uppercase tracking-wider text-brand-gray mb-2">1. Your Query</label>
+                        <div className="flex justify-between items-center mb-2">
+                            <label htmlFor="rag-query" className="block text-xs font-mono uppercase tracking-wider text-brand-gray">1. Your Query</label>
+                            <CopyButton textToCopy={query} label="Copy query" />
+                        </div>
                         <input id="rag-query" type="text" value={query} onChange={e => setQuery(e.target.value)} className="w-full bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-light p-3 font-mono focus:outline-none focus:ring-0 focus:border-brand-cyan" />
                     </div>
                     <div>
-                        <label htmlFor="rag-context" className="block text-xs font-mono uppercase tracking-wider text-brand-gray mb-2">2. Your Document/Context</label>
+                        <div className="flex justify-between items-center mb-2">
+                            <label htmlFor="rag-context" className="block text-xs font-mono uppercase tracking-wider text-brand-gray">2. Your Document/Context</label>
+                            <CopyButton textToCopy={context} label="Copy document/context" />
+                        </div>
                         <textarea id="rag-context" value={context} onChange={e => setContext(e.target.value)} rows={10} className="w-full bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-light p-3 font-mono focus:outline-none focus:ring-0 focus:border-brand-cyan resize-y" />
                     </div>
                     <Button onClick={handleRetrieveChunks} variant="primary" className="w-full" disabled={isLoading || !query || !context}>{isLoading ? "Retrieving..." : "Retrieve & Refine Context"}</Button>
@@ -147,7 +154,10 @@ const RAGContextRefiner: React.FC = () => {
             {/* Step 3: Output */}
             {step === 3 && (
                 <div className="flex flex-col flex-grow min-h-0 animate-fade-in">
-                    <h3 className="font-mono uppercase text-brand-gray tracking-widest mb-2">4. Final Response</h3>
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="font-mono uppercase text-brand-gray tracking-widest">4. Final Response</h3>
+                        <CopyButton textToCopy={finalResponse} label="Copy final response to clipboard" />
+                    </div>
                      <div className="relative flex-grow border-2 border-brand-dark-accent bg-brand-dark/50 p-4 overflow-y-auto scanline-container">
                         {isLoading ? <BlinkingCursor /> : (
                             <SyntaxHighlighter language="markdown" style={vscDarkPlus} customStyle={{ background: 'transparent', padding: '0', margin: '0' }} codeTagProps={{ style: { whiteSpace: 'pre-wrap' } }}>

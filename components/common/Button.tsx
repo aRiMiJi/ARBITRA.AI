@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     // Keep the visual flicker effect, but remove sound
     if (!props.disabled) {
       setFlicker(true);
-      setTimeout(() => setFlicker(false), 100);
+      window.setTimeout(() => setFlicker(false), 100);
     }
     if (onClick) {
       onClick(e);

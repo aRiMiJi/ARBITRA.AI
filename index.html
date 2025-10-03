@@ -54,15 +54,24 @@
       ::-webkit-scrollbar-thumb { border-width: 1px; }
     }
     html { scroll-behavior: smooth; }
+    
+    #matrix-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+      background-color: #101010;
+    }
+
     body {
-      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cfilter id="noise" x="0" y="0" width="100%" height="100%"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/%3E%3C/svg%3E'), 
-                        linear-gradient(135deg, #101010 25%, transparent 25%),
-                        linear-gradient(225deg, #101010 25%, transparent 25%),
-                        linear-gradient(45deg, #101010 25%, transparent 25%),
-                        linear-gradient(315deg, #101010 25%, #181818 25%);
-      background-size: 1px 1px, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
-      background-position: 0 0, 10px 10px, 10px 10px, 0 0, 0 0;
+      position: relative; /* For z-index context */
+      background-color: transparent; /* Make body transparent to see canvas */
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cfilter id="noise" x="0" y="0" width="100%" height="100%"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/%3E%3C/svg%3E');
       font-family: "Bai Jamjuree", "IBM Plex Mono", monospace, sans-serif;
+      overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
     /* Global brutalist animations and glitch for tooltips/toolbar */
@@ -353,8 +362,96 @@
     }
   </script>
 </head>
-<body class="bg-brand-dark">
+<body>
+  <canvas id="matrix-background"></canvas>
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
+  <script>
+    const canvas = document.getElementById('matrix-background');
+    let animationInterval;
+
+    const startAnimation = () => {
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const fontSize = 16;
+      const columns = Math.ceil(canvas.width / fontSize);
+
+      const drops = Array(columns).fill(1).map(() => Math.floor(Math.random() * canvas.height / fontSize));
+      const colors = {
+        cyan: '#00f6ff',
+        orange: '#ff7a00',
+        light: '#EAEAEA'
+      };
+
+      function draw() {
+        ctx.fillStyle = 'rgba(16, 16, 16, 0.06)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = `bold ${fontSize}px "IBM Plex Mono", monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = characters.charAt(Math.floor(Math.random() * characters.length));
+          const rand = Math.random();
+          if (rand > 0.99) ctx.fillStyle = colors.light;
+          else if (rand > 0.95) ctx.fillStyle = colors.orange;
+          else ctx.fillStyle = colors.cyan;
+
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      if (animationInterval) clearInterval(animationInterval);
+      animationInterval = setInterval(draw, 50);
+    };
+
+    const stopAnimation = () => {
+        if(animationInterval) clearInterval(animationInterval);
+        animationInterval = null;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
+    const initializeBackground = () => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const persona = document.documentElement.getAttribute('data-persona') || 'default';
+        const motionSafePersonas = ['epilepsy-safe', 'seizure-safe', 'adhd-friendly'];
+
+        if (prefersReducedMotion || motionSafePersonas.includes(persona)) {
+            stopAnimation();
+        } else {
+            startAnimation();
+        }
+    };
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(initializeBackground, 250);
+    });
+
+    const observer = new MutationObserver((mutationsList) => {
+        for(const mutation of mutationsList) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-persona') {
+                initializeBackground();
+            }
+        }
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
+    // Initial call
+    initializeBackground();
+  </script>
 </body>
 </html>

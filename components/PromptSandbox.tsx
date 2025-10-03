@@ -38,9 +38,12 @@ const BlinkingCursor: React.FC = () => (
 const ComparisonOutputCard: React.FC<{ version: PromptVersion | null, onRemove: () => void, onRun: (version: PromptVersion) => void, isLoading: boolean, activeRunId: number | null }> = ({ version, onRemove, onRun, isLoading, activeRunId }) => {
     if (!version) {
         return (
-            <div className="border-2 border-dashed border-brand-gray/30 h-full flex flex-col items-center justify-center p-4 text-center bg-brand-dark/20 rounded-lg">
-                <p className="text-brand-gray/60 font-mono text-lg">[ Slot Empty ]</p>
-                <p className="text-brand-gray/50 text-sm mt-2">Click 'Compare' on a version from history to add it.</p>
+            <div className="border-2 border-dashed border-brand-gray/30 h-full flex flex-col items-center justify-center p-6 text-center bg-brand-dark/20 rounded-lg transition-colors hover:border-brand-cyan hover:bg-brand-cyan/5">
+                <svg className="w-12 h-12 text-brand-gray/20 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <p className="text-brand-gray/70 font-mono text-lg">[ Empty Slot ]</p>
+                <p className="text-brand-gray/50 text-sm mt-2">Select 'Compare' from the history panel to add a version.</p>
             </div>
         )
     }
@@ -48,33 +51,39 @@ const ComparisonOutputCard: React.FC<{ version: PromptVersion | null, onRemove: 
     const isRunningThis = isLoading && activeRunId === version.id;
 
     return (
-        <div className="border-2 border-brand-dark-accent bg-brand-dark/50 flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
+        <div className="border-2 border-brand-dark-accent bg-brand-dark/50 flex flex-col h-full overflow-hidden rounded-lg shadow-xl shadow-black/30">
             <div className="flex justify-between items-center p-4 border-b-2 border-brand-dark-accent bg-brand-dark-accent/50 flex-shrink-0">
                 <div>
-                    <p className="text-base font-mono font-bold text-brand-light">VERSION #{version.id}</p>
-                    <p className="text-xs text-brand-gray truncate" title={version.timestamp}>{version.timestamp}</p>
+                    <p className="text-lg font-mono font-bold text-brand-light tracking-wider">VERSION #{version.id}</p>
+                    <p className="text-xs text-brand-gray/80 font-mono" title={version.timestamp}>{version.timestamp}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                     <Button onClick={() => onRun(version)} variant="secondary" className="!px-2 !py-1 !text-xs" disabled={isLoading}>
+                     <Button onClick={() => onRun(version)} variant="secondary" className="!px-3 !py-1 !text-xs" disabled={isLoading}>
                          {isRunningThis ? 'Running...' : 'Re-Run'}
                     </Button>
-                    <button onClick={onRemove} aria-label="Remove from comparison" className="p-1 text-brand-gray hover:text-brand-orange transition-colors">
+                    <button onClick={onRemove} aria-label="Remove from comparison" className="p-2 text-brand-gray hover:text-brand-orange transition-colors rounded-full hover:bg-brand-orange/10">
                         <CloseIcon className="w-5 h-5" />
                     </button>
                 </div>
             </div>
-            <div className="p-4 space-y-6 overflow-y-auto">
+            <div className="p-6 space-y-6 overflow-y-auto">
                 <div>
-                    <h5 className="text-sm font-mono uppercase text-brand-cyan mb-2 tracking-widest">[ Prompt ]</h5>
-                    <div className="text-sm font-mono bg-black/40 p-4 max-h-48 overflow-y-auto border-2 border-brand-gray/20 rounded-md">
+                    <div className="flex justify-between items-center mb-2">
+                        <h5 className="text-sm font-mono uppercase text-brand-cyan tracking-widest">[ Prompt ]</h5>
+                        <CopyButton textToCopy={version.prompt} label={`Copy prompt for version #${version.id}`} />
+                    </div>
+                    <div className="text-sm font-mono bg-black/50 p-4 max-h-48 overflow-y-auto border border-brand-gray/20 rounded-md">
                         <pre className="whitespace-pre-wrap font-inherit">{version.prompt}</pre>
                     </div>
                 </div>
                  <div>
-                    <h5 className="text-xs font-mono uppercase text-brand-orange mb-2 tracking-widest">
-                        [ Output <span className="text-brand-gray normal-case font-sans">from: {version.llm || 'N/A'}</span> ]
-                    </h5>
-                    <div className="text-sm bg-black/40 p-4 min-h-[12rem] overflow-y-auto border-2 border-brand-gray/20 rounded-md">
+                    <div className="flex justify-between items-center mb-2">
+                        <h5 className="text-sm font-mono uppercase text-brand-orange tracking-widest">
+                            [ Output <span className="text-brand-gray normal-case font-sans">from: {version.llm || 'N/A'}</span> ]
+                        </h5>
+                        <CopyButton textToCopy={version.output || ''} label={`Copy output for version #${version.id}`} />
+                    </div>
+                    <div className="text-sm bg-black/50 p-4 min-h-[12rem] overflow-y-auto border border-brand-gray/20 rounded-md">
                         {isRunningThis ? <div className="flex justify-center items-center h-full"><BlinkingCursor /></div> : version.output ? (
                             <SyntaxHighlighter
                                 language="markdown"
@@ -163,7 +172,8 @@ const PromptSandbox: React.FC = () => {
     setVersions(prev => [newVersion, ...prev]);
   };
 
-    const handleRunPrompt = async (version: PromptVersion) => {
+  const handleRunPrompt = async (e: React.MouseEvent, version: PromptVersion) => {
+    e.stopPropagation();
     if (!ai || isLoading) return;
     setIsLoading(true);
     setError(null);
@@ -181,7 +191,7 @@ const PromptSandbox: React.FC = () => {
         output = response.text ?? '';
       } else {
         // Simulate responses for other models
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network latency
+        await new Promise(resolve => window.setTimeout(resolve, 1000)); // Simulate network latency
         output = `// Simulated response from ${llmForThisRun}:\n\nThis is a placeholder response demonstrating the model selection functionality. The original prompt was:\n\n"${version.prompt}"`;
       }
 
@@ -200,11 +210,24 @@ const PromptSandbox: React.FC = () => {
   };
 
 
-  const loadVersion = (prompt: string) => {
-    setCurrentPrompt(prompt);
+  const loadVersion = (version: PromptVersion) => {
+    setCurrentPrompt(version.prompt);
+    setActiveOutputId(version.id);
   };
 
-  const handleAddToCompare = (version: PromptVersion) => {
+  const handleCloneVersion = (e: React.MouseEvent, versionToClone: PromptVersion) => {
+    e.stopPropagation();
+    const newVersion: PromptVersion = {
+        id: Date.now(),
+        prompt: versionToClone.prompt,
+        timestamp: new Date().toLocaleString(),
+    };
+    setVersions(prev => [newVersion, ...prev]);
+    setCurrentPrompt(versionToClone.prompt);
+};
+
+  const handleAddToCompare = (e: React.MouseEvent, version: PromptVersion) => {
+    e.stopPropagation();
     if (comparisonSlots.some(s => s?.id === version.id)) return;
     const newSlots = [...comparisonSlots];
     const emptySlotIndex = newSlots.indexOf(null);
@@ -252,7 +275,10 @@ const PromptSandbox: React.FC = () => {
       {/* Controls & Versions */}
       <div className="lg:col-span-1 flex flex-col gap-6">
         <div className="flex-shrink-0">
-          <h3 className="font-mono uppercase text-brand-gray tracking-widest mb-2">Prompt Editor</h3>
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-mono uppercase text-brand-gray tracking-widest">Prompt Editor</h3>
+            <CopyButton textToCopy={currentPrompt} label="Copy current prompt to clipboard" />
+          </div>
             <div className="grid grid-cols-2 gap-2 mb-2">
                  <select onChange={handleLoadTemplate} className="w-full bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-light p-2 font-mono text-sm focus:outline-none focus:ring-0 focus:border-brand-cyan">
                     <option value="">Load template...</option>
@@ -283,15 +309,27 @@ const PromptSandbox: React.FC = () => {
                     versions.map(v => {
                         const isInCompare = comparisonSlots.some(s => s?.id === v.id);
                         return (
-                            <div key={v.id} className={`p-3 border-2 transition-colors duration-200 ${activeOutputId === v.id ? 'border-brand-cyan bg-brand-cyan/10' : 'border-transparent hover:bg-brand-dark-accent'}`}>
-                                <p className="text-sm text-brand-light font-mono truncate cursor-pointer" onClick={() => loadVersion(v.prompt)} title="Click to load this prompt">{v.prompt}</p>
+                            <div 
+                                key={v.id}
+                                onClick={() => loadVersion(v)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadVersion(v)}}
+                                aria-label={`Load version from ${v.timestamp}. Prompt: ${v.prompt}`}
+                                className={`p-3 border-2 transition-colors duration-200 cursor-pointer ${activeOutputId === v.id ? 'border-brand-cyan bg-brand-cyan/10' : 'border-transparent hover:bg-brand-dark-accent'}`}>
+                                
+                                <p className="text-sm text-brand-light font-mono truncate" title={v.prompt}>{v.prompt}</p>
+
                                 <div className="flex justify-between items-center mt-2 gap-2">
                                     <p className="text-xs text-brand-gray">{v.timestamp}</p>
                                     <div className="flex gap-2">
-                                         <Button onClick={() => handleAddToCompare(v)} variant="secondary" className="!px-3 !py-1 !text-xs" disabled={isInCompare}>
+                                        <Button onClick={(e) => handleCloneVersion(e, v)} variant="secondary" className="!px-3 !py-1 !text-xs">
+                                            Clone
+                                        </Button>
+                                         <Button onClick={(e) => handleAddToCompare(e, v)} variant="secondary" className="!px-3 !py-1 !text-xs" disabled={isInCompare}>
                                             {isInCompare ? 'Selected' : 'Compare'}
                                         </Button>
-                                        <Button onClick={() => handleRunPrompt(v)} variant="secondary" className="!px-3 !py-1 !text-xs" disabled={isLoading && activeOutputId !== v.id}>
+                                        <Button onClick={(e) => handleRunPrompt(e, v)} variant="secondary" className="!px-3 !py-1 !text-xs" disabled={isLoading && activeOutputId !== v.id}>
                                             {isLoading && activeOutputId === v.id ? '...' : 'Run'}
                                         </Button>
                                     </div>
@@ -318,14 +356,14 @@ const PromptSandbox: React.FC = () => {
                     <ComparisonOutputCard 
                         version={comparisonSlots[0]} 
                         onRemove={() => handleRemoveFromCompare(0)}
-                        onRun={handleRunPrompt}
+                        onRun={(version) => handleRunPrompt(new MouseEvent('click') as any, version)}
                         isLoading={isLoading}
                         activeRunId={activeOutputId}
                     />
                     <ComparisonOutputCard 
                         version={comparisonSlots[1]} 
                         onRemove={() => handleRemoveFromCompare(1)}
-                        onRun={handleRunPrompt}
+                        onRun={(version) => handleRunPrompt(new MouseEvent('click') as any, version)}
                         isLoading={isLoading}
                         activeRunId={activeOutputId}
                     />
@@ -337,7 +375,7 @@ const PromptSandbox: React.FC = () => {
                      <h3 className="font-mono uppercase text-brand-gray tracking-widest">
                         Output {activeVersionForSingleView?.llm && <span className="text-brand-gray/80 normal-case">({activeVersionForSingleView.llm})</span>}
                     </h3>
-                    {activeVersionForSingleView?.output && <CopyButton textToCopy={activeVersionForSingleView.output} label="LLM Output" />}
+                    <CopyButton textToCopy={activeVersionForSingleView?.output ?? ''} label="Copy LLM Output to clipboard" />
                 </div>
                 <div className="relative flex-grow border-2 border-brand-dark-accent bg-brand-dark/50 p-4 overflow-y-auto scanline-container">
                     {isLoading && <BlinkingCursor />}
