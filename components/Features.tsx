@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
+import AnimatedText from './common/AnimatedText';
 
 const featuresData = [
   {
@@ -65,30 +66,41 @@ const Features: React.FC = () => {
             Built for the Enterprise
           </h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          arbitra.ai provides the critical infrastructure to secure, manage, and scale your AI development.
-        </p>
+        <AnimatedText 
+            text="arbitra.ai provides the critical infrastructure to secure, manage, and scale your AI development."
+            start={isVisible}
+            delay={200}
+            className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {featuresData.map((feature, index) => (
-          <div
-            key={index}
-            className={`opacity-0 cursor-pointer select-none ${isVisible ? 'animate-fade-in-up' : ''}`}
-            style={{ animationDelay: feature.delay }}
-            onClick={() => handleCardClick(index)}
-            tabIndex={0}
-            role="button"
-            aria-pressed={activeCard === index}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);
-            }}
-          >
-            <Card isHighlighted={activeCard === index}>
-              <h3 className="text-2xl font-bold font-sans text-brand-light uppercase mb-4">{feature.title}</h3>
-              <p className="text-brand-gray">{feature.description}</p>
-            </Card>
-          </div>
-        ))}
+        {featuresData.map((feature, index) => {
+          const delayMs = parseFloat(feature.delay) * 1000;
+          return (
+            <div
+              key={index}
+              className={`opacity-0 cursor-pointer select-none ${isVisible ? 'animate-fade-in-up' : ''}`}
+              style={{ animationDelay: feature.delay }}
+              onClick={() => handleCardClick(index)}
+              tabIndex={0}
+              role="button"
+              aria-pressed={activeCard === index}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);
+              }}
+            >
+              <Card isHighlighted={activeCard === index}>
+                <h3 className="text-2xl font-bold font-sans text-brand-light uppercase mb-4">{feature.title}</h3>
+                <AnimatedText
+                    text={feature.description}
+                    start={isVisible}
+                    delay={delayMs + 300}
+                    className="text-brand-gray"
+                />
+              </Card>
+            </div>
+          )
+        })}
       </div>
     </section>
   );

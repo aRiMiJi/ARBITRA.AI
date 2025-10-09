@@ -111,11 +111,8 @@ const RAGPipelineDesigner: React.FC = () => {
         Generate the Python code now. Use placeholder API keys where necessary (e.g., 'YOUR_API_KEY'). Respond ONLY with the python code block.`;
 
         try {
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: systemInstruction,
-            });
-            // Clean up the response to ensure it's just the code
+            const chat = ai.chats.create({ model: 'gemini-2.5-flash' });
+            const response = await chat.sendMessage({ message: systemInstruction });
             const cleanedCode = (response.text ?? '').replace(/^```python\n|```$/g, '').trim();
             setGeneratedCode(cleanedCode);
         } catch (err) {

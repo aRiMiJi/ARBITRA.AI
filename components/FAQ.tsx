@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PlusIcon, MinusIcon } from './icons/Icons';
+import AnimatedText from './common/AnimatedText';
 
 const faqData = [
   {
@@ -43,13 +44,13 @@ const FAQItem: React.FC<{
         aria-expanded={isOpen}
         aria-controls={`faq-answer-${index}`}
       >
-        <span className={`text-lg font-medium font-sans uppercase transition-colors duration-200 ${isOpen ? 'text-brand-cyan' : 'text-brand-light'} group-hover:tracking-wider`}>
+        <span className={`text-lg font-medium font-sans uppercase transition-all duration-200 transform ${isOpen ? 'text-brand-cyan' : 'text-brand-light'} group-hover:tracking-wider group-hover:text-brand-orange group-hover:scale-105 origin-left`}>
           {item.question}
         </span>
         {isOpen ? (
-          <MinusIcon className="h-6 w-6 text-brand-cyan flex-shrink-0" />
+          <MinusIcon className="h-6 w-6 text-brand-orange flex-shrink-0" />
         ) : (
-          <PlusIcon className="h-6 w-6 text-brand-gray flex-shrink-0 group-hover:text-brand-cyan transition-colors" />
+          <PlusIcon className="h-6 w-6 text-brand-gray flex-shrink-0 group-hover:text-brand-orange transition-all transform group-hover:scale-110" />
         )}
       </button>
       <div
@@ -61,7 +62,9 @@ const FAQItem: React.FC<{
         aria-hidden={!isOpen}
       >
         <div className="min-h-0">
-          <p className="pb-6 text-brand-gray leading-relaxed">{item.answer}</p>
+            <div className="pb-6 text-brand-gray leading-relaxed">
+                <AnimatedText text={item.answer} start={isOpen} />
+            </div>
         </div>
       </div>
     </div>
@@ -114,9 +117,14 @@ const FAQ: React.FC = () => {
             Frequently Asked Questions
           </h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          Have questions? We've got answers. If you can't find what you're looking for, feel free to contact us.
-        </p>
+        <div className="h-16 flex items-center justify-center">
+            <AnimatedText
+                text="Have questions? We've got answers. If you can't find what you're looking for, feel free to contact us."
+                start={isVisible}
+                delay={200}
+                className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+            />
+        </div>
       </div>
       <div className="max-w-4xl mx-auto">
         {faqData.map((item, index) => (

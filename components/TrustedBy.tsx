@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import AnimatedText from './common/AnimatedText';
 
 // Self-contained SVG logos for placeholder companies
 const LogoPlaceholder: React.FC<{ name: string; children: React.ReactNode }> = ({ name, children }) => (
@@ -100,9 +101,14 @@ const TrustedBy: React.FC = () => {
             Powering Innovation at Scale
           </h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          From bleeding-edge startups to Fortune 500s, arbitra.ai is the trusted platform for enterprise AI governance.
-        </p>
+        <div className="h-12 flex items-center justify-center">
+            <AnimatedText
+                text="From bleeding-edge startups to Fortune 500s, arbitra.ai is the trusted platform for enterprise AI governance."
+                start={isVisible}
+                delay={200}
+                className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+            />
+        </div>
       </div>
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">

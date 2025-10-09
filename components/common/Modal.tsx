@@ -21,7 +21,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       triggerRef.current = document.activeElement;
       window.addEventListener('keydown', handleEsc);
       window.setTimeout(() => {
-        modalRef.current?.focus();
+        const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements && focusableElements.length > 0) {
+            focusableElements[0].focus();
+        } else {
+            modalRef.current?.focus();
+        }
       }, 100); // Delay focus to allow for transitions
     }
 

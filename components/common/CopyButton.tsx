@@ -23,7 +23,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, label }) => {
     <button
       onClick={handleCopy}
       disabled={isDisabled || isCopied}
-      className={`px-3 py-1 text-xs font-mono uppercase tracking-widest flex items-center gap-2 bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-gray hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-brand-gray/30 disabled:hover:text-brand-gray transition-all duration-200 ${isCopied ? '!border-brand-cyan !text-brand-cyan' : ''}`}
+      className={`px-3 py-1 text-xs font-mono uppercase tracking-widest flex items-center gap-2 bg-brand-dark-accent border-2 border-brand-gray/30 text-brand-gray hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-brand-gray/30 disabled:hover:text-brand-gray transition-all duration-200 transform hover:scale-105 hover:shadow-[0_0_16px_#ffae51cc] ${isCopied ? '!border-brand-cyan !text-brand-cyan' : ''}`}
       aria-label={isCopied ? `Copied: ${label}` : label}
     >
       <CopyIcon className="h-4 w-4" />

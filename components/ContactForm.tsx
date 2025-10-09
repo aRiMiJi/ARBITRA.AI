@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
 import Button from './common/Button';
+import AnimatedText from './common/AnimatedText';
 
 const ContactForm: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -60,9 +61,14 @@ const ContactForm: React.FC = () => {
             Contact Us
           </h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          Have a question or want to request a demo? Fill out the form below and our team will get back to you shortly.
-        </p>
+        <div className="h-16 flex items-center justify-center">
+            <AnimatedText
+                text="Have a question or want to request a demo? Fill out the form below and our team will get back to you shortly."
+                start={isVisible}
+                delay={200}
+                className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+            />
+        </div>
       </div>
       <div className="max-w-3xl mx-auto">
         <Card>

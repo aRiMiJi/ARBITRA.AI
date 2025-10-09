@@ -40,9 +40,8 @@ Respond ONLY with the JSON object that adheres to the schema.
 User's failure scenario: "${scenario}"`;
 
     try {
-      const response = await ai.models.generateContent({
+      const chat = ai.chats.create({
         model: 'gemini-2.5-flash',
-        contents: systemInstruction,
         config: {
           responseMimeType: 'application/json',
           responseSchema: {
@@ -61,6 +60,7 @@ User's failure scenario: "${scenario}"`;
           }
         }
       });
+      const response = await chat.sendMessage({ message: systemInstruction });
       const result = JSON.parse(response.text);
       setCrisisPrompt(result.crisisPrompt);
       setMitigationPrompt(result.mitigationPrompt);

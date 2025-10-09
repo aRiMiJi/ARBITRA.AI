@@ -76,7 +76,7 @@ const ChatbotWidget: React.FC = () => {
   return (
     <>
       {/* Chat Widget Container */}
-      <div className={`fixed bottom-24 right-6 z-[100] w-[90vw] max-w-sm h-[70vh] max-h-[600px] transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+      <div className={`fixed bottom-24 left-6 z-[100] w-[90vw] max-w-sm h-[70vh] max-h-[600px] transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
         <div className="flex flex-col h-full bg-brand-dark border-2 border-brand-dark-accent shadow-[0_0_48px_#00fff744]">
           {/* Header */}
           <header className="flex items-center justify-between p-4 border-b-2 border-brand-dark-accent flex-shrink-0">
@@ -86,7 +86,7 @@ const ChatbotWidget: React.FC = () => {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2 text-brand-gray hover:text-brand-cyan transition-colors"
+              className="p-2 text-brand-gray hover:text-brand-cyan transition-all duration-300 transform hover:scale-110 hover:shadow-[0_0_16px_#ffae51cc] rounded-full"
               aria-label="Close chat"
             >
               <CloseIcon className="h-6 w-6" />
@@ -129,7 +129,7 @@ const ChatbotWidget: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="h-11 w-11 flex items-center justify-center bg-brand-cyan text-brand-dark border-2 border-brand-cyan disabled:opacity-50 transition-colors hover:bg-brand-orange"
+                className="h-11 w-11 flex items-center justify-center bg-brand-cyan text-brand-dark border-2 border-brand-cyan disabled:opacity-50 transition-all duration-300 transform hover:scale-110 hover:shadow-[0_0_28px_#ffae51cc] hover:bg-brand-orange"
                 aria-label="Send message"
               >
                 <SendIcon className="h-5 w-5" />
@@ -142,7 +142,7 @@ const ChatbotWidget: React.FC = () => {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 h-16 w-16 flex items-center justify-center bg-brand-dark text-brand-cyan border-2 border-brand-cyan shadow-[0_2px_28px_#00f6ff44] rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-[0_0_28px_#ffae51cc] ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+        className={`fixed bottom-6 left-6 z-50 h-16 w-16 flex items-center justify-center bg-brand-dark text-brand-cyan border-2 border-brand-cyan shadow-[0_2px_28px_#00f6ff44] rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-[0_0_28px_#ffae51cc] ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         aria-label={isOpen ? "Close chat widget" : "Open chat widget"}
         aria-haspopup="true"
         aria-expanded={isOpen}

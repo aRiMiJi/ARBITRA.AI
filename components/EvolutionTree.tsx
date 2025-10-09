@@ -130,8 +130,8 @@ const EvolutionTree: React.FC = () => {
           <h4 className="font-sans font-bold text-brand-light truncate">{node.title}</h4>
           <p className="text-xs text-brand-gray font-mono">by {node.author} | {node.stats.upvotes} votes</p>
           <div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onClick={() => handleVote(node.id)} className="p-1 hover:text-brand-cyan" title="Upvote"><StarIcon className="w-4 h-4" /></button>
-            <button onClick={() => handleBranch(node)} className="p-1 hover:text-brand-cyan" title="Branch/Remix"><BranchIcon className="w-4 h-4" /></button>
+            <button onClick={() => handleVote(node.id)} className="p-1 hover:text-brand-orange transition-all transform hover:scale-125" title="Upvote"><StarIcon className="w-4 h-4" /></button>
+            <button onClick={() => handleBranch(node)} className="p-1 hover:text-brand-orange transition-all transform hover:scale-125" title="Branch/Remix"><BranchIcon className="w-4 h-4" /></button>
           </div>
         </div>
         {node.children.length > 0 && (

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
+import AnimatedText from './common/AnimatedText';
 
 const steps = [
   {
@@ -62,7 +63,12 @@ const HowItWorks: React.FC = () => {
         <div className="glitch-text-container" data-text="How It Works">
           <h2 id="how-it-works-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">How It Works</h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">A streamlined, four-step process to secure and manage your entire prompt ecosystem.</p>
+        <AnimatedText 
+            text="A streamlined, four-step process to secure and manage your entire prompt ecosystem."
+            start={isVisible}
+            delay={200}
+            className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+        />
       </div>
       <div className="relative">
         {/* Connecting line for desktop */}
@@ -79,7 +85,12 @@ const HowItWorks: React.FC = () => {
               <Card>
                 <div className="text-6xl font-black font-sans text-brand-cyan/30 mb-4 select-none">{step.step}</div>
                 <h3 className="text-2xl font-bold font-sans text-brand-light uppercase mb-4">{step.title}</h3>
-                <p className="text-brand-gray">{step.description}</p>
+                <AnimatedText
+                    text={step.description}
+                    start={isVisible}
+                    delay={index * 200 + 300}
+                    className="text-brand-gray"
+                />
               </Card>
             </div>
           ))}

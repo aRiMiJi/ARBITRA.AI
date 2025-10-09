@@ -33,7 +33,7 @@ const LanguageToggle: React.FC = () => {
     <div ref={wrapperRef} className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-xs font-mono uppercase tracking-widest text-brand-gray hover:text-brand-cyan transition-colors duration-200 border-2 border-transparent focus:outline-none focus:border-brand-cyan"
+        className="flex items-center gap-2 px-3 py-2 text-xs font-mono uppercase tracking-widest text-brand-gray hover:text-brand-orange transition-all duration-200 border-2 border-transparent focus:outline-none focus:border-brand-cyan transform hover:scale-105"
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-label="Select language"
@@ -52,7 +52,7 @@ const LanguageToggle: React.FC = () => {
             <button
               key={lang.code}
               onClick={() => handleLanguageChange(lang.code as 'en' | 'jp' | 'de' | 'fa')}
-              className="w-full text-left px-4 py-2 text-sm font-mono text-brand-light hover:bg-brand-cyan hover:text-brand-dark transition-colors duration-200"
+              className="w-full text-left px-4 py-2 text-sm font-mono text-brand-light hover:bg-brand-orange hover:text-brand-dark transition-all duration-200 transform hover:scale-105 origin-left"
               role="menuitem"
             >
               {lang.name}

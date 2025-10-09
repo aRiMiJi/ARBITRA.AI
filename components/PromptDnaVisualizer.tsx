@@ -88,9 +88,8 @@ ${mutationInstruction}
 User Request: "${userInput}"`;
 
     try {
-      const response = await ai.models.generateContent({
+      const chat = ai.chats.create({
         model: 'gemini-2.5-flash',
-        contents: systemInstruction,
         config: {
           responseMimeType: "application/json",
           responseSchema: {
@@ -113,6 +112,7 @@ User Request: "${userInput}"`;
           }
         }
       });
+      const response = await chat.sendMessage({ message: systemInstruction });
       const jsonResponse = JSON.parse(response.text);
       setPromptDna(jsonResponse.genes);
     } catch (err) {

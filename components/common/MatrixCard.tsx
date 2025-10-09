@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useTypingEffect } from '../../hooks/useTypingEffect';
 
 interface MatrixCardProps {
   icon: React.ElementType;
@@ -6,61 +7,6 @@ interface MatrixCardProps {
   description: string;
   onLaunch: () => void;
 }
-
-// Custom hook for the typing animation with typos and backspacing
-const useTypingEffect = (textToType: string, start: boolean, speed = 60, backspaceSpeed = 40, typoChance = 0.04) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-
-  useEffect(() => {
-    if (!start) {
-      setDisplayedText('');
-      setIsTyping(false);
-      return;
-    }
-
-    setDisplayedText('');
-    setIsTyping(true);
-    let i = 0;
-    let currentText = '';
-    let timeoutId: number;
-
-    const type = () => {
-      if (i < textToType.length) {
-        // Decide if we should make a typo
-        if (Math.random() < typoChance && textToType[i] !== ' ' && i > 0 && textToType[i-1] !== ' ') {
-          const wrongChar = String.fromCharCode(97 + Math.floor(Math.random() * 26)); // random lowercase letter
-          currentText += wrongChar;
-          setDisplayedText(currentText);
-
-          timeoutId = window.setTimeout(() => {
-            currentText = currentText.slice(0, -1);
-            setDisplayedText(currentText);
-            // After backspacing, proceed to type the correct character
-            timeoutId = window.setTimeout(type, backspaceSpeed + Math.random() * 50);
-          }, speed + Math.random() * 150); // Pause before correcting
-        } else {
-          // Type the correct character
-          currentText += textToType[i];
-          setDisplayedText(currentText);
-          i++;
-          timeoutId = window.setTimeout(type, speed + Math.random() * 80);
-        }
-      } else {
-        setIsTyping(false); // Typing is complete
-      }
-    };
-
-    timeoutId = window.setTimeout(type, speed);
-
-    return () => {
-      clearTimeout(timeoutId);
-      setIsTyping(false);
-    };
-  }, [textToType, start, speed, backspaceSpeed, typoChance]);
-
-  return { displayedText, isTyping };
-};
 
 const BlinkingCursor: React.FC = () => (
   <span className="inline-block w-2.5 h-4 bg-brand-cyan ml-1 align-middle animate-flicker" style={{ boxShadow: '0 0 5px #00f6ff' }} />
@@ -72,7 +18,7 @@ const MatrixCard: React.FC<MatrixCardProps> = ({ icon: Icon, name, description, 
   const animationFrameId = useRef<number | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   
-  const { displayedText, isTyping } = useTypingEffect(description, isHovered);
+  const { displayedText, isTyping } = useTypingEffect(description, isHovered, 100);
 
 
   const drawMatrix = useCallback(() => {
@@ -150,7 +96,7 @@ const MatrixCard: React.FC<MatrixCardProps> = ({ icon: Icon, name, description, 
       {/* Hover Content */}
       <div className="absolute inset-0 z-30 p-6 flex flex-col items-center justify-center text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto">
         <div 
-          className="text-brand-cyan mb-6 text-sm font-mono h-[7.5rem] text-left w-full transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0 delay-100" 
+          className="text-brand-cyan mb-6 text-sm font-mono h-[7.5rem] text-left w-full transform transition-all duration-300 ease-out opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 delay-100" 
           style={{ textShadow: '0 0 6px #00f6ff, 0 0 10px #00f6ff' }} // Brighter, more saturated glow
           aria-live="polite"
           aria-label={description}
@@ -160,7 +106,7 @@ const MatrixCard: React.FC<MatrixCardProps> = ({ icon: Icon, name, description, 
         </div>
         <button 
           onClick={onLaunch}
-          className="px-6 py-2 font-mono uppercase text-sm tracking-widest bg-transparent border-2 border-brand-cyan text-brand-cyan hover:bg-brand-cyan hover:text-brand-dark hover:shadow-[0_0_16px_#00f6ff] transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 delay-200"
+          className="px-6 py-2 font-mono uppercase text-sm tracking-widest bg-transparent border-2 border-brand-cyan text-brand-cyan hover:bg-brand-cyan hover:text-brand-dark hover:shadow-[0_0_28px_#ffae51cc] hover:scale-105 transition-all duration-300 ease-out transform opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 delay-200"
           aria-label={`Launch ${name}`}
         >
           Launch Tool

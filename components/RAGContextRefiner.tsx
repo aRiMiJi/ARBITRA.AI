@@ -41,9 +41,8 @@ const RAGContextRefiner: React.FC = () => {
         DOCUMENT: "${context}"`;
 
         try {
-            const response = await ai.models.generateContent({
+            const chat = ai.chats.create({
                 model: 'gemini-2.5-flash',
-                contents: systemInstruction,
                 config: {
                     responseMimeType: "application/json",
                     responseSchema: {
@@ -52,6 +51,7 @@ const RAGContextRefiner: React.FC = () => {
                     }
                 }
             });
+            const response = await chat.sendMessage({ message: systemInstruction });
             const result = JSON.parse(response.text);
             const retrievedChunks = result.map((text: string, index: number) => ({ id: index, text, isIncluded: true }));
             setChunks(retrievedChunks);
@@ -80,10 +80,8 @@ const RAGContextRefiner: React.FC = () => {
         QUERY: "${query}"`;
 
         try {
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: systemInstruction,
-            });
+            const chat = ai.chats.create({ model: 'gemini-2.5-flash' });
+            const response = await chat.sendMessage({ message: systemInstruction });
             setFinalResponse(response.text ?? '');
             setStep(3);
         } catch (err) {

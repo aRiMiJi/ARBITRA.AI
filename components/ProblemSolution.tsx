@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import AnimatedDivider from './common/AnimatedDivider';
+import AnimatedText from './common/AnimatedText';
 
 const ProblemSolution: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -55,9 +56,12 @@ const ProblemSolution: React.FC = () => {
             From Unmanaged Risk to Strategic Asset
           </h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          The unregulated use of AI prompts exposes your organization to significant IP, security, and compliance risks. arbitra.ai transforms them into secure, manageable, and auditable assets.
-        </p>
+        <AnimatedText
+            text="The unregulated use of AI prompts exposes your organization to significant IP, security, and compliance risks. arbitra.ai transforms them into secure, manageable, and auditable assets."
+            start={isVisible}
+            delay={200}
+            className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -73,7 +77,13 @@ const ProblemSolution: React.FC = () => {
               >
                 <span className="text-brand-orange mr-4 mt-1 font-bold text-xl">✗</span>
                 <p className="text-brand-gray">
-                  <strong className="text-brand-light">{item.title}</strong> {item.text}
+                  <strong className="text-brand-light">{item.title}</strong>{' '}
+                  <AnimatedText 
+                    as="span" 
+                    text={item.text} 
+                    start={isVisible} 
+                    delay={ (200 + index * 100) + 300 } 
+                  />
                 </p>
               </li>
             ))}
@@ -92,7 +102,13 @@ const ProblemSolution: React.FC = () => {
               >
                 <span className="text-brand-cyan mr-4 mt-1 font-bold text-xl">✓</span>
                 <p className="text-brand-gray">
-                  <strong className="text-brand-light">{item.title}</strong> {item.text}
+                  <strong className="text-brand-light">{item.title}</strong>{' '}
+                  <AnimatedText 
+                    as="span" 
+                    text={item.text} 
+                    start={isVisible} 
+                    delay={ (200 + index * 100) + 300 }
+                  />
                 </p>
               </li>
             ))}

@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-brand-gray hover:text-brand-cyan transition-colors duration-200 uppercase tracking-wider"
+                className="text-brand-gray hover:text-brand-orange transition-all duration-200 transform hover:scale-105 uppercase tracking-wider"
               >
                 {item.name}
               </a>
@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-gray hover:text-brand-cyan transition-colors duration-200"
+                className="text-brand-gray hover:text-brand-orange transition-all duration-200 transform hover:scale-125"
                 aria-label={item.name}
               >
                 <item.icon className="h-6 w-6" />

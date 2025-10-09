@@ -147,7 +147,7 @@ const GraffitiWall: React.FC = () => {
             </p>
             <div className="absolute -bottom-2 -right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <span className="text-xs font-mono text-brand-cyan">{prompt.upvotes}</span>
-              <button onClick={() => handleUpvote(prompt.id)} className="p-1 text-brand-gray hover:text-brand-cyan hover:scale-125 transition-all" aria-label="Upvote prompt">
+              <button onClick={() => handleUpvote(prompt.id)} className="p-1 text-brand-gray hover:text-brand-orange hover:scale-125 transition-all" aria-label="Upvote prompt">
                 <StarIcon className="w-4 h-4" />
               </button>
             </div>

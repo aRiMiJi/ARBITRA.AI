@@ -61,7 +61,7 @@ const ComparisonOutputCard: React.FC<{ version: PromptVersion | null, onRemove: 
                      <Button onClick={() => onRun(version)} variant="secondary" className="!px-3 !py-1 !text-xs" disabled={isLoading}>
                          {isRunningThis ? 'Running...' : 'Re-Run'}
                     </Button>
-                    <button onClick={onRemove} aria-label="Remove from comparison" className="p-2 text-brand-gray hover:text-brand-orange transition-colors rounded-full hover:bg-brand-orange/10">
+                    <button onClick={onRemove} aria-label="Remove from comparison" className="p-2 text-brand-gray hover:text-brand-orange transition-all duration-200 transform hover:scale-110 rounded-full hover:bg-brand-orange/10">
                         <CloseIcon className="w-5 h-5" />
                     </button>
                 </div>
@@ -316,7 +316,7 @@ const PromptSandbox: React.FC = () => {
                                 tabIndex={0}
                                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadVersion(v)}}
                                 aria-label={`Load version from ${v.timestamp}. Prompt: ${v.prompt}`}
-                                className={`p-3 border-2 transition-colors duration-200 cursor-pointer ${activeOutputId === v.id ? 'border-brand-cyan bg-brand-cyan/10' : 'border-transparent hover:bg-brand-dark-accent'}`}>
+                                className={`p-3 border-2 transition-all duration-200 cursor-pointer transform hover:scale-[1.02] hover:shadow-[0_0_16px_#ffae51cc] ${activeOutputId === v.id ? 'border-brand-cyan bg-brand-cyan/10' : 'border-transparent hover:bg-brand-dark-accent'}`}>
                                 
                                 <p className="text-sm text-brand-light font-mono truncate" title={v.prompt}>{v.prompt}</p>
 

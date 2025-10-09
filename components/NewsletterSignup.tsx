@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
 import Button from './common/Button';
+import AnimatedText from './common/AnimatedText';
 
 const NewsletterSignup: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -66,9 +67,14 @@ const NewsletterSignup: React.FC = () => {
                   Stay Ahead of the Curve
                 </h2>
               </div>
-              <p className="mt-4 text-lg text-brand-gray max-w-2xl mx-auto">
-                Stay updated on AI security trends, compliance news, and exclusive arbitra.ai product updates.
-              </p>
+              <div className="h-16 flex items-center justify-center">
+                <AnimatedText
+                    text="Stay updated on AI security trends, compliance news, and exclusive arbitra.ai product updates."
+                    start={isVisible}
+                    delay={200}
+                    className="mt-4 text-lg text-brand-gray max-w-2xl mx-auto"
+                />
+              </div>
               <form onSubmit={handleSubmit} className="mt-8 max-w-lg mx-auto flex flex-col sm:flex-row gap-4">
                 <label htmlFor="newsletter-email" className="sr-only">Email Address</label>
                 <input

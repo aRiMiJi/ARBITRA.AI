@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
 import Button from './common/Button';
 import { SOC2Badge, ISO27001Badge, GDPRBadge } from './icons/Icons';
+import AnimatedText from './common/AnimatedText';
 
 const pricingPlans = [
   {
@@ -72,9 +73,14 @@ const Pricing: React.FC = () => {
         <div className="glitch-text-container" data-text="Transparent & Scalable Pricing">
           <h2 id="pricing-heading" className="glitch-text text-4xl font-bold font-sans tracking-wider text-brand-light uppercase">Transparent & Scalable Pricing</h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          Choose the plan that fits your needs. No hidden fees, ever.
-        </p>
+        <div className="h-12 flex items-center justify-center">
+            <AnimatedText
+                text="Choose the plan that fits your needs. No hidden fees, ever."
+                start={isVisible}
+                delay={200}
+                className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+            />
+        </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         {pricingPlans.map((plan, index) => (
@@ -98,7 +104,13 @@ const Pricing: React.FC = () => {
                   <span className="text-5xl font-bold font-sans text-white">{plan.price}</span>
                   <span className="text-brand-gray">{plan.period}</span>
                 </div>
-                <p className="text-brand-gray mb-8 h-20">{plan.description}</p>
+                <div className="text-brand-gray mb-8 h-20">
+                    <AnimatedText 
+                        text={plan.description} 
+                        start={isVisible} 
+                        delay={index * 150 + 300} 
+                    />
+                </div>
                 <ul className="space-y-4 text-brand-light">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center">

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Card from './common/Card';
 import { LinkedInIcon, XIcon, GithubIcon } from './icons/Icons';
+import AnimatedText from './common/AnimatedText';
 
 const values = [
   {
@@ -81,9 +82,14 @@ const About: React.FC = () => {
             About arbitra.ai
           </h2>
         </div>
-        <p className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-          We are a team of security experts, AI researchers, and enterprise software veterans committed to building the foundational infrastructure for secure and compliant artificial intelligence.
-        </p>
+        <div className="h-20 flex items-center justify-center">
+            <AnimatedText
+                text="We are a team of security experts, AI researchers, and enterprise software veterans committed to building the foundational infrastructure for secure and compliant artificial intelligence."
+                start={isVisible}
+                delay={200}
+                className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+            />
+        </div>
       </div>
 
       {/* Mission & Vision */}
@@ -91,13 +97,17 @@ const About: React.FC = () => {
         <div className={`opacity-0 ${isVisible ? 'animate-fade-in-left' : ''}`} style={{ animationDelay: '0.2s' }}>
           <Card>
             <h3 className="text-2xl font-bold font-sans text-brand-cyan uppercase mb-4">Our Mission</h3>
-            <p className="text-brand-gray">To empower enterprises to innovate with AI confidently by providing the essential tools for security, governance, and auditability. We turn AI prompts from an unmanaged risk into a strategic, protected asset.</p>
+            <div className="text-brand-gray h-32">
+              <AnimatedText text="To empower enterprises to innovate with AI confidently by providing the essential tools for security, governance, and auditability. We turn AI prompts from an unmanaged risk into a strategic, protected asset." start={isVisible} delay={400} />
+            </div>
           </Card>
         </div>
         <div className={`opacity-0 ${isVisible ? 'animate-fade-in-right' : ''}`} style={{ animationDelay: '0.4s' }}>
           <Card>
             <h3 className="text-2xl font-bold font-sans text-brand-orange uppercase mb-4">Our Vision</h3>
-            <p className="text-brand-gray">To create a future where AI is seamlessly and securely integrated into every enterprise workflow, driven by a universal standard of trust, transparency, and control that arbitra.ai provides.</p>
+            <div className="text-brand-gray h-32">
+              <AnimatedText text="To create a future where AI is seamlessly and securely integrated into every enterprise workflow, driven by a universal standard of trust, transparency, and control that arbitra.ai provides." start={isVisible} delay={600} />
+            </div>
           </Card>
         </div>
       </div>
@@ -114,7 +124,9 @@ const About: React.FC = () => {
             >
               <Card>
                 <h4 className="text-xl font-bold font-sans text-brand-light uppercase mb-4">{value.title}</h4>
-                <p className="text-brand-gray">{value.description}</p>
+                <div className="text-brand-gray h-24">
+                    <AnimatedText text={value.description} start={isVisible} delay={500 + index * 150 + 300} />
+                </div>
               </Card>
             </div>
           ))}
@@ -141,7 +153,9 @@ const About: React.FC = () => {
                 </div>
                 <h4 className="text-xl font-bold font-sans text-brand-light uppercase">{member.name}</h4>
                 <p className="text-brand-cyan font-mono uppercase text-sm tracking-wider">{member.title}</p>
-                <p className="text-brand-gray mt-4 text-sm">{member.bio}</p>
+                <div className="text-brand-gray mt-4 text-sm h-32">
+                    <AnimatedText text={member.bio} start={isVisible} delay={800 + index * 150 + 300} />
+                </div>
                 <div className="mt-6 flex justify-center space-x-4">
                   <a href={member.socials.linkedin} aria-label={`${member.name}'s LinkedIn`} className="text-brand-gray hover:text-brand-cyan transition-colors"><LinkedInIcon className="h-6 w-6" /></a>
                   <a href={member.socials.x} aria-label={`${member.name}'s X profile`} className="text-brand-gray hover:text-brand-cyan transition-colors"><XIcon className="h-6 w-6" /></a>

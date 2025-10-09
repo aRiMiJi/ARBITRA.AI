@@ -59,10 +59,8 @@ Do NOT generate the answer to the user's request. Only generate the rewritten, o
 The user's simple request is: "${userInput}"`;
 
     try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: metaPrompt,
-      });
+      const chat = ai.chats.create({ model: 'gemini-2.5-flash' });
+      const response = await chat.sendMessage({ message: metaPrompt });
       setOptimizedPrompt((response.text ?? '').trim());
     } catch (error) {
       const friendlyError = getApiErrorMessage(error);
@@ -81,10 +79,8 @@ The user's simple request is: "${userInput}"`;
     setTestOutput('');
 
     try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: optimizedPrompt,
-      });
+      const chat = ai.chats.create({ model: 'gemini-2.5-flash' });
+      const response = await chat.sendMessage({ message: optimizedPrompt });
       setTestOutput((response.text ?? '').trim());
     } catch (error) {
       const friendlyError = getApiErrorMessage(error);

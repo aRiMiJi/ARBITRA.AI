@@ -14,15 +14,15 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    'relative group px-8 py-4 font-bold tracking-wider uppercase focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out overflow-hidden';
+    'relative group px-8 py-4 font-bold tracking-wider uppercase focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out overflow-hidden transform hover:scale-105';
 
   const [flicker, setFlicker] = useState(false);
 
   const variantClasses = {
     primary:
-      'bg-brand-cyan text-brand-dark shadow-[0_8px_32px_0_#00fff780] hover:shadow-[0_0_24px_#ff760c88] hover:brightness-110 active:bg-brand-orange active:shadow-none active:brightness-125 border-2 border-transparent',
+      'bg-brand-cyan text-brand-dark shadow-[0_8px_32px_0_#00fff780] hover:shadow-[0_0_28px_#ffae51cc] hover:brightness-110 active:bg-brand-orange active:shadow-none active:brightness-125 border-2 border-transparent',
     secondary:
-      'bg-transparent border-2 border-brand-cyan text-brand-cyan overflow-hidden hover:shadow-[0_0_16px_#00fff755] focus-visible:shadow-[0_0_24px_#00fff799]',
+      'bg-transparent border-2 border-brand-cyan text-brand-cyan overflow-hidden hover:shadow-[0_0_28px_#ffae51cc] focus-visible:shadow-[0_0_24px_#00fff799]',
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {

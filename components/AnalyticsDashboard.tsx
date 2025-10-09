@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Card from './common/Card';
+import AnimatedText from './common/AnimatedText';
 
 const usageData = [
   { month: 'Jan', promptsGenerated: 400, successRate: 85, apiCalls: 1200 },
@@ -12,6 +13,31 @@ const usageData = [
 ];
 
 const AnalyticsDashboard: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentRef = sectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   const totalPrompts = usageData.reduce((sum, item) => sum + item.promptsGenerated, 0);
   const avgSuccessRate = usageData.reduce((sum, item) => sum + item.successRate, 0) / usageData.length;
   const totalApiCalls = usageData.reduce((sum, item) => sum + item.apiCalls, 0);
@@ -31,10 +57,17 @@ const AnalyticsDashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full text-brand-light p-4 animate-fade-in">
+    <div ref={sectionRef} className={`flex flex-col h-full text-brand-light p-4 opacity-0 ${isVisible ? 'animate-fade-in' : ''}`}>
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold font-sans tracking-wider uppercase">AI Usage Analytics</h2>
-        <p className="mt-2 text-brand-gray">Monitoring prompt performance and API consumption.</p>
+        <div className="h-8 flex items-center justify-center">
+            <AnimatedText
+                text="Monitoring prompt performance and API consumption."
+                start={isVisible}
+                delay={200}
+                className="mt-2 text-brand-gray"
+            />
+        </div>
       </div>
 
       {/* Key Metrics */}

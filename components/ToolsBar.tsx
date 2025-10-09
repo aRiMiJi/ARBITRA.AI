@@ -13,6 +13,7 @@ import {
 } from './icons/Icons';
 import MatrixCard from './common/MatrixCard';
 import { CloseIcon } from './icons/Icons';
+import AnimatedText from './common/AnimatedText';
 
 // Direct imports to fix the lazy loading issue
 import GoldPromptGenerator from './GoldPromptGenerator';
@@ -62,7 +63,7 @@ const ExpandedToolView = ({ tool, onClose }: { tool: any, onClose: () => void })
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-brand-gray hover:text-brand-cyan transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-cyan"
+            className="p-2 text-brand-gray hover:text-brand-cyan transition-all duration-300 transform hover:scale-110 hover:shadow-[0_0_16px_#ffae51cc] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-cyan"
             aria-label="Close tool"
           >
             <CloseIcon className="h-6 w-6" />
@@ -132,9 +133,14 @@ const ToolsBar: React.FC = () => {
               AI Toolkit v3.0
             </h2>
           </div>
-          <p className="relative z-10 mt-4 text-lg text-brand-gray max-w-3xl mx-auto">
-            A comprehensive suite of powerful tools to secure, manage, and optimize your entire prompt engineering lifecycle.
-          </p>
+          <div className="relative z-10 h-16 flex items-center justify-center">
+            <AnimatedText
+                text="A comprehensive suite of powerful tools to secure, manage, and optimize your entire prompt engineering lifecycle."
+                start={isVisible}
+                delay={200}
+                className="mt-4 text-lg text-brand-gray max-w-3xl mx-auto"
+            />
+          </div>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">

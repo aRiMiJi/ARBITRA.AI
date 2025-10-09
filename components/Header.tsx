@@ -81,16 +81,20 @@ const Header: React.FC = () => {
             <React.Fragment key={item.href}>
               <a
                 href={item.href}
-                className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-colors duration-200 font-bold group"
+                className="relative text-xs font-mono uppercase tracking-widest px-2 py-1 text-brand-light hover:text-brand-cyan transition-all duration-200 font-bold group transform hover:scale-105"
                 tabIndex={0}
                 style={{ outline: 'none', letterSpacing: '0.09em' }}
               >
                 {item.label}
+                 <span
+                    className="absolute bottom-0 left-0 block h-px bg-brand-cyan w-full transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 origin-center"
+                    aria-hidden="true"
+                  />
               </a>
               {idx < navItems.length - 1 && (
                 <span className="flex items-center mx-1" aria-hidden="true">
                   <span
-                    className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-cyan transition-all duration-200"
+                    className="block w-px h-4 bg-brand-gray/30 group-hover:bg-brand-orange transition-all duration-200"
                     style={{
                       opacity: 0.48,
                       transition: "background-color 230ms cubic-bezier(.4,0,.2,1), opacity 180ms cubic-bezier(.4,0,.2,1)"

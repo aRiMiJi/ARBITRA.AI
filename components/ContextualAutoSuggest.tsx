@@ -45,9 +45,8 @@ CONTEXT: "${context || 'No context provided.'}"
 DRAFT: "${debouncedPrompt}"`;
 
     try {
-      const response = await ai.models.generateContent({
+      const chat = ai.chats.create({
         model: 'gemini-2.5-flash',
-        contents: systemInstruction,
         config: {
           responseMimeType: 'application/json',
           responseSchema: {
@@ -62,6 +61,7 @@ DRAFT: "${debouncedPrompt}"`;
           }
         }
       });
+      const response = await chat.sendMessage({ message: systemInstruction });
       const result = JSON.parse(response.text);
       setSuggestions(result.suggestions || []);
     } catch (err) {
